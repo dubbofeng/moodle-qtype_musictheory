@@ -118,6 +118,15 @@ $string['musictheory_gradingstrategy_scale-write_help'] = '<p>The grading strate
  A grading strategy that divides the grade evenly by the number of scale notes the user has
  to enter, and awards partial grade for each correct note.</p>
 ';
+$string['musictheory_gradingstrategy_melodic-dictation'] = 'Grading strategy';
+$string['musictheory_gradingstrategy_melodic-dictation_help'] = '<p>The grading strategy specifies how
+ the question will be graded.</p>
+ <p><b>All or nothing</b>: The response is compared to the correct answer. If the response
+ is correct, full marks are given. If the answer is incorrect, a mark of zero is given.</p>
+ <p><b>Partial credit for each correct note</b>:
+ A grading strategy that divides the grade evenly by the number of scale notes the user has
+ to enter, and awards partial grade for each correct note.</p>
+';
 $string['qtype_musictheory_strategy_all_or_nothing'] = 'All or nothing';
 $string['qtype_musictheory_strategy_chordqualitywrite_allornothing'] = 'All or nothing';
 $string['qtype_musictheory_strategy_harmonicfunctionwrite_allornothing'] = 'All or nothing';
