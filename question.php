@@ -120,6 +120,8 @@ abstract class qtype_musictheory_question extends question_graded_automatically 
             case 'harmonicfunction-identify-random':
                 return new qtype_musictheory_harmonicfunction_identify_renderer($page, null);
                 return parent::get_renderer($page);
+            case 'melodic-dictation':
+                return new qtype_musictheory_melodic_dictation_renderer($page, null);
         }
     }
 

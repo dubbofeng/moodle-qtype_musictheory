@@ -119,6 +119,9 @@ class qtype_musictheory extends question_type {
             case 'harmonicfunction-identify-random':
                 $class = 'qtype_musictheory_harmonicfunction_identify_random';
                 break;
+            case 'melodic-dictation':
+                $class = 'qtype_musictheory_melodic_dictation';
+                break;
         }
 
         $gradingstrategyname = $questiondata->options->musictheory_gradingstrategy;
@@ -236,6 +239,7 @@ class qtype_musictheory extends question_type {
                     array_push($question->musictheory_possiblescalesinresponse, (string) $scaletype);
                 }
             case 'scale-write':
+            case 'melodic-dictation':
                 $question->musictheory_clef = (string) $options->clef;
                 $question->musictheory_givennoteletter = (string) $options->tonic[0]->letter;
                 $question->musictheory_givennoteaccidental = (string) $options->tonic[0]->accidental;
@@ -516,6 +520,7 @@ class qtype_musictheory extends question_type {
                 }
                 $outxml .= '</possiblescalesinresponse>';
             case 'scale-write':
+            case 'melodic-dictation':
                 $outxml .= '<clef>' . $question->musictheory_clef . '</clef>';
                 $outxml .= '<tonic>';
                 $outxml .= '<letter>' . $question->musictheory_givennoteletter . '</letter>';

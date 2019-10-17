@@ -78,6 +78,8 @@ class qtype_musictheory_edit_form extends question_edit_form {
                 'harmonicfunction-write-random'    => get_string('qtype_harmonicfunction-write-random', 'qtype_musictheory'),
                 'harmonicfunction-identify'        => get_string('qtype_harmonicfunction-identify', 'qtype_musictheory'),
                 'harmonicfunction-identify-random' => get_string('qtype_harmonicfunction-identify-random', 'qtype_musictheory'),
+                'melodic-dictation' => get_string('qtype_melodic-dictation', 'qtype_musictheory'),
+                
             );
 
             $musicqtypeselect = $mform->createElement('select', 'musictheory_musicqtype', '', $selectoptionsqtype);
@@ -208,6 +210,9 @@ class qtype_musictheory_edit_form extends question_edit_form {
                 break;
             case 'harmonicfunction-identify':
                 $this->add_harmonicfunction_identify_options($mform);
+                break;
+            case 'melodic-dictation':
+                $this->add_melodic_dictation_options($mform);
                 break;
             default:
                 $this->add_keysignature_write_options($mform);
@@ -374,6 +379,18 @@ class qtype_musictheory_edit_form extends question_edit_form {
      * @param object $mform the form being built.
      */
     private function add_scale_write_options($mform) {
+        $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
+        $this->add_note_option($mform, 'givennote', get_string('tonic', 'qtype_musictheory'), true, false);
+        $this->add_includekeysignature_option($mform);
+        $this->add_scaletype_option($mform, 'musictheory_scaletype', false, 'scaletype');
+    }
+
+    /**
+     * Adds form options for the melodic dictation subtype.
+     *
+     * @param object $mform the form being built.
+     */
+    private function add_melodic_dictation_options($mform) {
         $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
         $this->add_note_option($mform, 'givennote', get_string('tonic', 'qtype_musictheory'), true, false);
         $this->add_includekeysignature_option($mform);
@@ -1036,6 +1053,8 @@ class qtype_musictheory_validation {
             case 'harmonicfunction-write':
             case 'harmonicfunction-identify':
                 return self::validate_harmonicfunction_options($data);
+            case 'melodic-dictation':
+            return self::validate_melodic_dictation_options($data);
         }
         return array();
     }
@@ -1212,6 +1231,61 @@ class qtype_musictheory_validation {
      * @return array The validation errors.
      */
     public static function validate_scale_options($data) {
+        $errors = array();
+
+        $comptonic = new Note($data['musictheory_givennoteletter'], $data['musictheory_givennoteaccidental'], 4);
+        $mode = ($data['musictheory_scaletype'] == 'major') ? 'M' : 'm';
+        $validkeys = Tonality::getValidKeys($mode);
+        $isvalidtonic = false;
+        foreach ($validkeys as $key) {
+            if ($comptonic->equals($key->getTonic(), false)) {
+                $isvalidtonic = true;
+                break;
+            }
+        }
+        if (!$isvalidtonic) {
+            $errors['musictheory_givennoteelementgroup'] = get_string('validation_scale_invalidtonic', 'qtype_musictheory');
+        }
+        $ltr = $data['musictheory_givennoteletter'];
+        $acc = $data['musictheory_givennoteaccidental'];
+        $reg = $data['musictheory_givennoteregister'];
+        $tonic = new Note($ltr, $acc, $reg);
+        $staff = new Staff($data['musictheory_clef']);
+        $scaletopnote = $tonic->getNoteFromInterval(new Interval('+', 'P', 8));
+        if (!$staff->noteFitsInStaff($tonic, 4) || !$staff->noteFitsInStaff($scaletopnote, 4)) {
+            $errors['musictheory_givennoteelementgroup'] = get_string('validation_scaleoutsidestaff', 'qtype_musictheory');
+        }
+
+        $scaletypeselected = false;
+        if ($data['musictheory_musicqtype'] === 'scale-identify') {
+            foreach ($data['musictheory_possiblescalesinresponse'] as $scaletype) {
+                if ($scaletype === $data['musictheory_scaletype']) {
+                    $scaletypeselected = true;
+                }
+            }
+            if (!$scaletypeselected) {
+                $errors['musictheory_possiblescalesinresponse'] = get_string('validation_possiblescaletypenotselected',
+                                                                             'qtype_musictheory');
+            }
+        }
+
+        return $errors;
+    }
+
+    
+    /**
+     * Validates scale form options.
+     *
+     * It makes sure that the requested scale can be written in the requested
+     * key and mode. It also makes sure that the scale fits in the staff in the
+     * requested clef. Finally, for scale identification, it makes sure that the
+     * scale type selected for identification is included in the list of possible
+     * responses.
+     *
+     * @param array $data The form data.
+     * @return array The validation errors.
+     */
+    public static function validate_melodic_dictation_options($data) {
         $errors = array();
 
         $comptonic = new Note($data['musictheory_givennoteletter'], $data['musictheory_givennoteaccidental'], 4);

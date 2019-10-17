@@ -100,6 +100,7 @@ $string['qtype_harmonicfunction-write'] = 'Harmonic function writing';
 $string['qtype_harmonicfunction-write-random'] = 'Harmonic function writing (random)';
 $string['qtype_harmonicfunction-identify'] = 'Harmonic function identification';
 $string['qtype_harmonicfunction-identify-random'] = 'Harmonic function identification (random)';
+$string['qtype_melodic-dictation'] = 'Melodic dictation';
 
 // Edit form - grading strategy options and help.
 $string['musictheory_gradingstrategy'] = 'Grading strategy';
@@ -401,6 +402,16 @@ $string['scale_write_questionastext_help'] = '<p>Enter a comma-separated list of
  <p>Random example: <b>Tonic = An4 answer=>An4,Bb4,C#5,D#5,E#5,F#5,G#5,An5</b></p>';
 $string['scale_write_questionasui'] = 'Scale answer entry';
 $string['scale_write_questionasui_help'] = '<p>Enter notes by clicking on the staff, after selecting
+ the type of accidental in the right-hand toolbar. To delete a note, click on it again.</p>
+ <p>Note that accidentals carry over to subsequent notes.</p>';
+ $string['melodic_dictation_questionastext'] = 'Scale answer entry';
+$string['melodic_dictation_questionastext_help'] = '<p>Enter a comma-separated list of notes, including
+ the specified tonic, without spaces, using the following syntax:</p><p>[Uppercase letter name]
+ [Accidental ("n" = natural, "#" = sharp, "b" = flat, "x" = double-sharp, "bb" = double-flat)]
+ [Register (a digit between 2 and 6, following the scientific pitch notation)], ... </p>
+ <p>Random example: <b>Tonic = An4 answer=>An4,Bb4,C#5,D#5,E#5,F#5,G#5,An5</b></p>';
+$string['melodic_dictation_questionasui'] = 'Scale answer entry';
+$string['melodic_dictation_questionasui_help'] = '<p>Enter notes by clicking on the staff, after selecting
  the type of accidental in the right-hand toolbar. To delete a note, click on it again.</p>
  <p>Note that accidentals carry over to subsequent notes.</p>';
 $string['emptykeysignature'] = 'Empty key signature';
