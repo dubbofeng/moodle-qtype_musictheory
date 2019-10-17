@@ -135,7 +135,7 @@ require_once(__DIR__ . '/interval/question.php');
 require_once(__DIR__ . '/scale/question.php');
 require_once(__DIR__ . '/chordquality/question.php');
 require_once(__DIR__ . '/harmonicfunction/question.php');
-
+require_once(__DIR__ . '/melodicdictation/question.php');
 /**
  * This interface defines the methods that a class must implement if it is to
  * be used a strategy to grade a music theory question subtype and provide
