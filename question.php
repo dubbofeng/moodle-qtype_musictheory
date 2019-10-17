@@ -33,6 +33,7 @@ require_once(__DIR__ . '/interval/renderer.php');
 require_once(__DIR__ . '/scale/renderer.php');
 require_once(__DIR__ . '/harmonicfunction/renderer.php');
 require_once(__DIR__ . '/chordquality/renderer.php');
+require_once(__DIR__ . '/melodicdictation/renderer.php');
 
 /**
  * Interface that a music theory question subtype must implement.
