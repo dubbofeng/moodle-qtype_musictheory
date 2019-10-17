@@ -157,7 +157,7 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
  * @copyright  2013 Eric Brisson
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_musictheory_strategy_scale_creditbynote implements qtype_musictheory_grading_strategy {
+class qtype_musictheory_strategy_dictation_creditbynote implements qtype_musictheory_grading_strategy {
 
     public function grade($response, $correctresponse) {
 
