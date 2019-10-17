@@ -78,7 +78,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
                 'harmonicfunction-write-random'    => get_string('qtype_harmonicfunction-write-random', 'qtype_musictheory'),
                 'harmonicfunction-identify'        => get_string('qtype_harmonicfunction-identify', 'qtype_musictheory'),
                 'harmonicfunction-identify-random' => get_string('qtype_harmonicfunction-identify-random', 'qtype_musictheory'),
-                'melodic-dictation' => get_string('qtype_melodic-dictation', 'qtype_musictheory'),
+                'melodic-dictation'                => get_string('qtype_melodic-dictation', 'qtype_musictheory'),
                 
             );
 
