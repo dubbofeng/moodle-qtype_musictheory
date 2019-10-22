@@ -47,6 +47,9 @@ $string['includealterations_help'] = 'Indicates whether accidentals are to be
  included as part of the question.';
 $string['includestaticnote'] = 'Include given note';
 $string['displaykeysignature'] = 'Display key signature';
+$string['showfirstnote'] = 'Show the first note';
+$string['allowenharmonicnotes'] = 'Allow enharmonic notes';
+$string['numberofnotes'] = 'Number of notes';
 $string['direction'] = 'Direction';
 $string['givennoteelementgroup'] = 'Given note';
 $string['harmonicfunctiontype-random'] = 'Possible harmonic functions';
@@ -350,6 +353,7 @@ $string['questiontext_chordquality_write'] = 'Enter the following chord';
 $string['questiontext_chordquality_identify'] = 'Identify the root and quality of the following chord';
 $string['questiontext_harmonicfunction_write'] = 'Enter the following harmonic function';
 $string['questiontext_harmonicfunction_identify'] = 'Identify the following harmonic function';
+$string['questiontext_melodic_dictation'] = 'Melodic dictation';
 
 $string['acc_n'] = '&#9838;';
 $string['acc_sharp'] = '&#9839;';

@@ -135,6 +135,8 @@ class qtype_musictheory extends question_type {
         $question->musictheory_clef = 'treble';
         $question->musictheory_keymode = 'GnM';
         $question->musictheory_displaykeysignature = '0';
+        $question->musictheory_showfirstnote = '0';
+        $question->musictheory_allowenharmonicnotes = '0';
         $question->musictheory_considerregister = '0';
         $question->musictheory_includealterations = '0';
         $question->musictheory_direction = 'above';
@@ -239,7 +241,6 @@ class qtype_musictheory extends question_type {
                     array_push($question->musictheory_possiblescalesinresponse, (string) $scaletype);
                 }
             case 'scale-write':
-            case 'melodic-dictation':
                 $question->musictheory_clef = (string) $options->clef;
                 $question->musictheory_givennoteletter = (string) $options->tonic[0]->letter;
                 $question->musictheory_givennoteaccidental = (string) $options->tonic[0]->accidental;
@@ -269,6 +270,20 @@ class qtype_musictheory extends question_type {
                 $question->musictheory_hfprimary = (string) $options->harmonicfunction[0]->hfprimary;
                 $question->musictheory_hfinvext = (string) $options->harmonicfunction[0]->hfinvext;
                 $question->musictheory_hfsecondary = (string) $options->harmonicfunction[0]->hfsecondary;
+                break;
+            case 'melodic-dictation':
+                $question->musictheory_clef = (string) $options->clef;
+                for ($i=1; $i <= $options->numberofnotes; $i++) { 
+                    $question->{"musictheory_givennote".$i."letter"} = (string) $options->tonic[$i-1]->letter;
+                    $question->{"musictheory_givennote".$i."accidental"} = (string) $options->tonic[$i-1]->accidental;
+                    $question->{"musictheory_givennote".$i."register"} = (string) $options->tonic[$i-1]->register;
+                }
+                $allowenharmonicnotes = (((string) $options->allowenharmonicnotes) == 'true') ? 1 : 0;
+                $question->musictheory_allowenharmonicnotes = $allowenharmonicnotes;
+                $showfirstnote = (((string) $options->showfirstnote) == 'true') ? 1 : 0;
+                $question->musictheory_showfirstnote = $showfirstnote;
+                $question->musictheory_numberofnotes = (string) $options->numberofnotes;
+                $question->musictheory_scaletype = (string) $options->scaletype;
                 break;
         }
 
@@ -520,7 +535,6 @@ class qtype_musictheory extends question_type {
                 }
                 $outxml .= '</possiblescalesinresponse>';
             case 'scale-write':
-            case 'melodic-dictation':
                 $outxml .= '<clef>' . $question->musictheory_clef . '</clef>';
                 $outxml .= '<tonic>';
                 $outxml .= '<letter>' . $question->musictheory_givennoteletter . '</letter>';
@@ -557,11 +571,25 @@ class qtype_musictheory extends question_type {
                 $outxml .= '<hfsecondary>' . $question->musictheory_hfsecondary . '</hfsecondary>';
                 $outxml .= '</harmonicfunction>';
                 break;
+            case 'melodic-dictation':
+                $outxml .= '<clef>' . $question->musictheory_clef . '</clef>';
+                for ($i=1; $i <= $question->musictheory_numberofnotes; $i++) { 
+                    $outxml .= '<tonic>';
+                    $outxml .= '<letter>' . $question->{"musictheory_givennote".$i."letter"} . '</letter>';
+                    $outxml .= '<accidental>' . $question->{"musictheory_givennote".$i."accidental"} . '</accidental>';
+                    $outxml .= '<register>' . $question->{"musictheory_givennote".$i."register"} . '</register>';
+                    $outxml .= '</tonic>';
+                }
+                $outxml .= '<numberofnotes>' . $question->musictheory_numberofnotes . '</numberofnotes>';
+                $showfirstnote = ($question->musictheory_showfirstnote == 1) ? 'true' : 'false';
+                $outxml .= '<showfirstnote>' . $showfirstnote . '</showfirstnote>';
+                $allowenharmonicnotes = ($question->musictheory_allowenharmonicnotes == 1) ? 'true' : 'false';
+                $outxml .= '<allowenharmonicnotes>' . $allowenharmonicnotes . '</allowenharmonicnotes>';
+                break;
         }
 
         $outxml .= '</' . $musicqtype . '>';
         $outxml .= '</options>';
-
         return $outxml;
     }
 

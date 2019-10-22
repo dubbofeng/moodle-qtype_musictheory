@@ -60,6 +60,7 @@ class qtype_musictheory_melodic_dictation_renderer extends qtype_musictheory_ren
                 'correctresponse' => $correctresponse,
                 'correctrespstr' => get_string('correctansweris', 'qtype_musictheory'),
                 'additionalparams' => array(
+                    'maxnotes' => $question->musictheory_numberofnotes,
                 )
             )
         );
@@ -89,9 +90,9 @@ class qtype_musictheory_melodic_dictation_renderer extends qtype_musictheory_ren
             'class' => 'ablock'
         );
 
-        $tonic = $question->musictheory_givennoteletter;
-        $acc = $question->musictheory_givennoteaccidental;
-        $tonic .= $acc . $question->musictheory_givennoteregister;
+        $tonic = $question->musictheory_givennote1letter;
+        $acc = $question->musictheory_givennote1accidental;
+        $tonic .= $acc . $question->musictheory_givennote1register;
         $result .= html_writer::start_tag('div', $nonjavascriptdivattr);
         $result .= '<b>' . get_string('tonic', 'qtype_musictheory') . ' = ' . $tonic . '</b>&nbsp;' . $input;
         if (!$options->readonly) {

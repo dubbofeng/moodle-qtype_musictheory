@@ -126,6 +126,8 @@ NS.XMLConverter.prototype.getCanvasXML = function (input) {
         case 'harmonicfunction-identify':
         case 'chordquality-identify':
             return this.getHarmonicFunctionIdentifyXML(input);
+        case 'melodic-dictation':
+            return this.getMelodicDictationXML(input);
         default:
             return null;
     }
@@ -311,7 +313,6 @@ NS.XMLConverter.prototype.getNoteWriteXML = function (input) {
         stateXML += '    </Toolbars>\n';
     }
     stateXML += '</MusThGUI>';
-
     return stateXML;
 };
 
@@ -747,6 +748,109 @@ NS.XMLConverter.prototype.getScaleWriteXML = function (input) {
 };
 
 /**
+ * Converts the options and initial input for a scale writing
+ * question into an XML string that can be passed to a MusThGUI instance.
+ *
+ * @method getMelodicDictationXML
+ * @param {String} input Provides the initial input as a string, formatted
+ * as a Moodle scale writing response.
+ * @return {String} A MusThGUI compatible XML string.
+ */
+NS.XMLConverter.prototype.getMelodicDictationXML = function (input) {
+
+    var i,
+            noteParts,
+            keySign,
+            key = this.options.givenNote.ltr + this.options.givenNote.acc,
+            stateXML,
+            resp;
+
+    // if (this.options.scaleType === 'major') {
+    //     key += 'M';
+    // } else {
+    //     key += 'm';
+    // }
+    key += 'M';
+    if (this.options.includeKS) {
+        keySign = new NS.getKeySign(key, this.options.clef);
+    } else {
+        keySign = [];
+    }
+
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="' + this.options.includeKS + '">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">\n';
+    stateXML += '<Staff clef="' + this.options.clef + '">\n';
+    stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
+    for (i = 0; i < keySign.length; i++) {
+        noteParts = this.noteNameToParts(keySign[i]);
+        stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
+                noteParts.ltr + '" register="' + noteParts.reg + '" ' +
+                'editable="false" />';
+    }
+    stateXML += '</KeySign>\n';
+
+    if (input === '' || input === null || typeof (input) === 'undefined') {
+        resp = null;
+    } else {
+        resp = input.split(',');
+    }
+    stateXML += '<NoteColumns>';
+
+    if (resp !== null) {
+
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<NoteColumn maxNotes="1" >';
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                if (i === 0) {
+                    stateXML += 'noteValue="whole" editable="false" />';
+                } else {
+                    stateXML += 'noteValue="whole" editable="' +
+                            this.setNotesEditable + '" />';
+                }
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
+        }
+    } else {
+        for (i = 0; i < this.options.numberofnotes; i++) {
+            if (i === 0 && this.options.showFirstNote === true) {
+                stateXML += '<NoteColumn maxNotes="1">';
+                stateXML += '<Note letter="' + this.options.givenNote[0].ltr + '" ';
+                stateXML += 'register="' + this.options.givenNote[0].reg + '" ';
+                stateXML += 'accidental="' + this.options.givenNote[0].acc + '" ';
+                stateXML += 'noteValue="whole" editable="false" />';
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
+        }
+    }
+    stateXML += '</NoteColumns>';
+
+    stateXML += '</Staff>\n';
+    stateXML += '</StaffSystem>\n';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
+
+    return stateXML;
+
+};
+
+/**
  * Converts the options and initial input for a scale identification
  * question into an XML string that can be passed to a MusThGUI instance.
  *
@@ -770,13 +874,11 @@ NS.XMLConverter.prototype.getScaleIdentifyXML = function (input) {
     } else {
         key += 'm';
     }
-    console.log(this.options.scaleType);
     if (this.options.includeKS) {
         keySign = new NS.getKeySign(key, this.options.clef);
     } else {
         keySign = [];
     }
-
     stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
             '" accidentalCarryOver="' + this.options.includeKS + '">\n';
     stateXML += '<StaffSystem maxLedgerLines="4">\n';

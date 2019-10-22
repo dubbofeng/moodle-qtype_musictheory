@@ -51,9 +51,9 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
 
     public function get_correct_response() {
 
-        $ltr = $this->musictheory_givennoteletter;
-        $acc = $this->musictheory_givennoteaccidental;
-        $reg = $this->musictheory_givennoteregister;
+        $ltr = $this->musictheory_givennote1letter;
+        $acc = $this->musictheory_givennote1accidental;
+        $reg = $this->musictheory_givennote1register;
         $tonic = new Note($ltr, $acc, $reg);
         $scale = null;
         switch ($this->musictheory_scaletype) {
@@ -129,23 +129,20 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
         } else {
             $qtext = get_string('questiontext_melodic_dictation', 'qtype_musictheory');
         }
-        switch ($this->musictheory_givennoteaccidental) {
+        switch ($this->musictheory_givennote1accidental) {
             case 'n':
                 $acc = '';
                 break;
             case 'b':
             case 'x':
             case 'bb':
-                $acc = get_string('acc_' . $this->musictheory_givennoteaccidental, 'qtype_musictheory');
+                $acc = get_string('acc_' . $this->musictheory_givennote1accidental, 'qtype_musictheory');
                 break;
             case '#':
                 $acc = get_string('acc_sharp', 'qtype_musictheory');
                 break;
         }
-        $scale = get_string('note' . strtolower($this->musictheory_givennoteletter), 'qtype_musictheory');
-        $scale .= $acc;
-        $scale .= ' ' . get_string('scaletype_' . $this->musictheory_scaletype, 'qtype_musictheory');
-        return $qtext . ': <b>' . $scale . '</b>';
+        return $qtext. '</b>';
     }
 
 }

@@ -290,20 +290,29 @@ NS.questionRender.convertOptionsXMLtoObjectLiteral = function (optionsXML,
                     'clef')[0].firstChild.nodeValue;
             options.key = optionsNode.getElementsByTagName(
                     'key')[0].firstChild.nodeValue;
-            options.includeKS =
-                    optionsNode.getElementsByTagName(
-                            'displaykeysignature')[0].firstChild.nodeValue;
+            options.includeKS =optionsNode.getElementsByTagName('displaykeysignature')[0].firstChild.nodeValue;
             options.includeKS = (options.includeKS === 'true');
             break;
         case 'harmonicfunction-identify':
-            options.clef = optionsNode.getElementsByTagName(
-                    'clef')[0].firstChild.nodeValue;
-            options.key = optionsNode.getElementsByTagName(
-                    'key')[0].firstChild.nodeValue;
-            options.includeKS =
-                    optionsNode.getElementsByTagName(
-                            'displaykeysignature')[0].firstChild.nodeValue;
+            options.clef = optionsNode.getElementsByTagName('clef')[0].firstChild.nodeValue;
+            options.key = optionsNode.getElementsByTagName('key')[0].firstChild.nodeValue;
+            options.includeKS =optionsNode.getElementsByTagName('displaykeysignature')[0].firstChild.nodeValue;
             options.includeKS = (options.includeKS === 'true');
+            break;
+        case 'melodic-dictation':
+            options.clef = optionsNode.getElementsByTagName('clef')[0].firstChild.nodeValue;
+            options.numberofnotes = optionsNode.getElementsByTagName('numberofnotes')[0].firstChild.nodeValue;
+            options.givenNote = [];
+            for (var index = 0; index < options.numberofnotes; index++) {
+                var note = {};
+                note.ltr = optionsNode.getElementsByTagName('letter')[0].firstChild.nodeValue;
+                note.acc = optionsNode.getElementsByTagName('accidental')[0].firstChild.nodeValue;
+                note.reg = optionsNode.getElementsByTagName('register')[0].firstChild.nodeValue;
+                options.givenNote.push(note);
+            }
+            options.includeKS = false;
+            options.showFirstNote =optionsNode.getElementsByTagName('showfirstnote')[0].firstChild.nodeValue;
+            options.showFirstNote = (options.showFirstNote === 'true');
             break;
     }
 
@@ -334,7 +343,6 @@ NS.initEditForm = function () {
  * @return {Undefined}
  */
 NS.editForm.setFormOptionListeners = function () {
-
     Y.all(
         '#id_musictheory_musicqtype').on('change', function () {
             var typeBtnNode = Y.one('#' + 'id_musictheory_updatemusicqtype');
@@ -343,7 +351,24 @@ NS.editForm.setFormOptionListeners = function () {
             }
         }
     );
-
+    Y.all(
+        '#id_musictheory_numberofnotes').on('change', function () {
+            var typeBtnNode = Y.one('#' + 'id_updatebutton');
+            if (typeBtnNode) {
+                typeBtnNode.simulate('click');
+            }
+        }
+    );
+    var numberofnotes = Y.one('#id_musictheory_numberofnotes').get('value');
+    if(numberofnotes > 1
+        && location.href.indexOf("musictheory_numberofnotes") == -1
+        && !Y.one('#fgroup_id_musictheory_givennote1elementgroup')){
+        if(location.href.indexOf("?")>-1){
+            location.href = location.href+"&musictheory_numberofnotes="+numberofnotes;
+        }else{
+            location.href = location.href+"?musictheory_numberofnotes="+numberofnotes;
+        }
+    }
 };
 
 /**

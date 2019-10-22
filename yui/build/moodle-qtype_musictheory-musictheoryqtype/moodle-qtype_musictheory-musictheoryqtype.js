@@ -52,25 +52,25 @@ NS.questionRender = {};
  */
 NS.initQuestionRender = function (params) {
 
-  var HTMLInputID = params.inputname,
-      optionsXML = params.optionsxml,
-      readOnly = params.readonly,
-      initialInput = params.initialinput,
-      correctResponse = params.correctresponse,
-      correctRespStr = params.correctrespstr,
-      additionalParams = params.additionalparams,
-      options = NS.questionRender.convertOptionsXMLtoObjectLiteral(optionsXML,
-          additionalParams);
+    var HTMLInputID = params.inputname,
+            optionsXML = params.optionsxml,
+            readOnly = params.readonly,
+            initialInput = params.initialinput,
+            correctResponse = params.correctresponse,
+            correctRespStr = params.correctrespstr,
+            additionalParams = params.additionalparams,
+            options = NS.questionRender.convertOptionsXMLtoObjectLiteral(optionsXML,
+                    additionalParams);
 
-  NS.questionRender.renderQuestion(HTMLInputID, options,
-      readOnly, initialInput);
+    NS.questionRender.renderQuestion(HTMLInputID, options,
+            readOnly, initialInput);
 
-  if (correctResponse !== null && typeof (correctResponse) !== 'undefined' &&
-      correctResponse !== '') {
-    NS.questionRender.renderCorrectResponse(HTMLInputID, options,
-        correctResponse,
-        correctRespStr);
-  }
+    if (correctResponse !== null && typeof (correctResponse) !== 'undefined' &&
+            correctResponse !== '') {
+        NS.questionRender.renderCorrectResponse(HTMLInputID, options,
+                correctResponse,
+                correctRespStr);
+    }
 
 };
 
@@ -88,64 +88,63 @@ NS.initQuestionRender = function (params) {
  * @return {Undefined}
  */
 NS.questionRender.renderQuestion = function (HTMLInputID, options,
-    readOnly, initialInput) {
+        readOnly, initialInput) {
 
-  var YInput,
-      canvasDiv,
-      displayCanvasID,
-      xmlConverter,
-      replacedDiv,
-      canvasNode,
-      stateXML,
-      callBack;
+    var YInput,
+            canvasDiv,
+            displayCanvasID,
+            xmlConverter,
+            replacedDiv,
+            canvasNode,
+            stateXML,
+            callBack;
 
-  HTMLInputID = HTMLInputID.replace(':', '\\:');
+    HTMLInputID = HTMLInputID.replace(':', '\\:');
 
-  YInput = Y.one('#' + HTMLInputID);
+    YInput = Y.one('#' + HTMLInputID);
 
-  replacedDiv = Y.one(
-      '#' + 'musictheory_div_replacedbycanvas_' + HTMLInputID);
+    replacedDiv = Y.one(
+            '#' + 'musictheory_div_replacedbycanvas_' + HTMLInputID);
 
-  if (replacedDiv) {
-    replacedDiv.hide();
-  }
+    if (replacedDiv) {
+        replacedDiv.hide();
+    }
 
-  canvasDiv = Y.one('#musictheory_div_canvas_' + HTMLInputID);
+    canvasDiv = Y.one('#musictheory_div_canvas_' + HTMLInputID);
 
-  if (!canvasDiv) {
-    return;
-  }
+    if (!canvasDiv) {
+        return;
+    }
 
-  displayCanvasID = 'musictheory_renderMusicCanvas_' + HTMLInputID.replace(
-      '\\:', '-');
+    displayCanvasID = 'musictheory_renderMusicCanvas_' + HTMLInputID.replace(
+            '\\:', '-');
 
-  canvasNode = Y.one('#' + displayCanvasID);
+    canvasNode = Y.one('#' + displayCanvasID);
 
-  if (!canvasNode) {
-    canvasNode = Y.Node.create(
-        '<div style="margin-top:10px;margin-bottom:15px;overflow:auto"><canvas id="' +
-        displayCanvasID + '" width="1" height="1" /></div>');
-    canvasDiv.append(canvasNode);
-  }
+    if (!canvasNode) {
+        canvasNode = Y.Node.create(
+                '<div style="margin-top:10px;margin-bottom:15px;overflow:auto"><canvas id="' +
+                displayCanvasID + '" width="1" height="1" /></div>');
+        canvasDiv.append(canvasNode);
+    }
 
-  options.editable = !readOnly;
-  options.containsUserInput = true;
+    options.editable = !readOnly;
+    options.containsUserInput = true;
 
-  xmlConverter = new NS.XMLConverter(options);
-  callBack = function (stateXML) {
-    YInput.set('value', xmlConverter.getCanvasTextOutput(stateXML));
-  };
+    xmlConverter = new NS.XMLConverter(options);
+    callBack = function (stateXML) {
+        YInput.set('value', xmlConverter.getCanvasTextOutput(stateXML));
+    };
 
-  stateXML = xmlConverter.getCanvasXML(initialInput);
+    stateXML = xmlConverter.getCanvasXML(initialInput);
 
-  if (options.musicQType === 'keyboard-input') {
-    new KeyboardInput(displayCanvasID, stateXML, callBack);
-  }
-  else {
-    new MusThGUI(displayCanvasID, stateXML, callBack);
-  }
+    if (options.musicQType === 'keyboard-input') {
+        new KeyboardInput(displayCanvasID, stateXML, callBack);
+    } else {
+        new MusThGUI(displayCanvasID, stateXML, callBack);
+    }
 
-  canvasDiv.show();
+    canvasDiv.show();
 };
 
 /**
@@ -163,47 +162,45 @@ NS.questionRender.renderQuestion = function (HTMLInputID, options,
  * @return {Undefined}
  */
 NS.questionRender.renderCorrectResponse = function (HTMLInputID, options,
-    correctResponse, correctResponseStr) {
+        correctResponse, correctResponseStr) {
 
-  var YInput,
-      correctCanvasID,
-      canvasNode,
-      xmlConverter,
-      stateXML,
-      callBack;
+    var YInput,
+            correctCanvasID,
+            canvasNode,
+            xmlConverter,
+            stateXML,
+            callBack;
 
+    HTMLInputID = HTMLInputID.replace(':', '\\:');
+    YInput = Y.one('#' + 'musictheory_correctanswerdiv_' + HTMLInputID);
 
-  HTMLInputID = HTMLInputID.replace(':', '\\:');
-  YInput = Y.one('#' + 'musictheory_correctanswerdiv_' + HTMLInputID);
+    if (!YInput) {
+        return;
+    }
 
-  if (!YInput) {
-    return;
-  }
+    correctCanvasID = 'musictheory_renderCorrectResponseCanvas_' +
+            HTMLInputID.replace('\\:', '-');
 
-  correctCanvasID = 'musictheory_renderCorrectResponseCanvas_' +
-      HTMLInputID.replace('\\:', '-');
+    canvasNode = Y.one('#' + correctCanvasID);
 
-  canvasNode = Y.one('#' + correctCanvasID);
+    if (!canvasNode) {
+        YInput.setHTML('<p>' + correctResponseStr + '</p>' +
+                '<canvas id="' + correctCanvasID + '" width="1" height="1" />');
+    }
 
-  if (!canvasNode) {
-    YInput.setHTML('<p>' + correctResponseStr + '</p>' +
-        '<canvas id="' + correctCanvasID + '" width="1" height="1" />');
-  }
+    options.editable = false;
+    options.containsUserInput = false;
 
-  options.editable = false;
-  options.containsUserInput = false;
+    xmlConverter = new NS.XMLConverter(options);
+    callBack = function () {
+    };
 
-  xmlConverter = new NS.XMLConverter(options);
-  callBack = function () {
-  };
-
-  stateXML = xmlConverter.getCanvasXML(correctResponse);
-  if (options.musicQType === 'keyboard-input') {
-    new KeyboardInput(correctCanvasID, stateXML, callBack);
-  }
-  else {
-    new MusThGUI(correctCanvasID, stateXML, callBack);
-  }
+    stateXML = xmlConverter.getCanvasXML(correctResponse);
+    if (options.musicQType === 'keyboard-input') {
+        new KeyboardInput(correctCanvasID, stateXML, callBack);
+    } else {
+        new MusThGUI(correctCanvasID, stateXML, callBack);
+    }
 
 };
 
@@ -218,101 +215,110 @@ NS.questionRender.renderCorrectResponse = function (HTMLInputID, options,
  * @return {Object literal}
  */
 NS.questionRender.convertOptionsXMLtoObjectLiteral = function (optionsXML,
-    additionalParams) {
+        additionalParams) {
 
-  var parsedXML = Y.XML.parse(optionsXML),
-      options = {},
-      optionsNode = parsedXML.getElementsByTagName('options')[0].firstChild,
-      musicQType = optionsNode.nodeName;
+    var parsedXML = Y.XML.parse(optionsXML),
+            options = {},
+            optionsNode = parsedXML.getElementsByTagName('options')[0].firstChild,
+            musicQType = optionsNode.nodeName;
 
-  options.musicQType = musicQType;
+    options.musicQType = musicQType;
 
-  switch (musicQType) {
-    case 'note-write':
-    case 'note-identify':
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.includeAlterations = optionsNode.getElementsByTagName(
-          'includealterations')[0].firstChild.nodeValue;
-      options.includeAlterations = (options.includeAlterations === 'true');
-      break;
-    case 'keyboard-input':
-      options.includestaticnote = optionsNode.getElementsByTagName(
-          'includestaticnote')[0].firstChild.nodeValue;
-      if (options.includestaticnote === 'true') {
-        options.staticnotepitchclass = additionalParams.pitchclass;
-        options.staticnoteregister = additionalParams.register;
-      }
-      break;
-    case 'keysignature-write':
-    case 'keysignature-identify':
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.key = optionsNode.getElementsByTagName(
-          'key')[0].firstChild.nodeValue;
-      break;
-    case 'interval-write':
-    case 'interval-identify':
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.givenNote = [];
-      options.givenNote.ltr =
-          optionsNode.getElementsByTagName('letter')[0].firstChild.nodeValue;
-      options.givenNote.acc =
-          optionsNode.getElementsByTagName(
-              'accidental')[0].firstChild.nodeValue;
-      options.givenNote.reg =
-          optionsNode.getElementsByTagName('register')[0].firstChild.nodeValue;
-      break;
-    case 'scale-write':
-    case 'scale-identify':
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.givenNote = [];
-      options.givenNote.ltr =
-          optionsNode.getElementsByTagName('letter')[0].firstChild.nodeValue;
-      options.givenNote.acc =
-          optionsNode.getElementsByTagName(
-              'accidental')[0].firstChild.nodeValue;
-      options.givenNote.reg =
-          optionsNode.getElementsByTagName('register')[0].firstChild.nodeValue;
-      options.includeKS =
-          optionsNode.getElementsByTagName(
-              'displaykeysignature')[0].firstChild.nodeValue;
-      options.includeKS = (options.includeKS === 'true');
-      options.scaleType = optionsNode.getElementsByTagName(
-          'scaletype')[0].firstChild.nodeValue;
-      break;
-    case 'chordquality-write':
-    case 'chordquality-identify':
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.maxNotes = additionalParams.maxnotes;
-      break;
-    case 'harmonicfunction-write':
-      options.maxNotes = additionalParams.maxnotes;
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.key = optionsNode.getElementsByTagName(
-          'key')[0].firstChild.nodeValue;
-      options.includeKS =
-          optionsNode.getElementsByTagName(
-              'displaykeysignature')[0].firstChild.nodeValue;
-      options.includeKS = (options.includeKS === 'true');
-      break;
-    case 'harmonicfunction-identify':
-      options.clef = optionsNode.getElementsByTagName(
-          'clef')[0].firstChild.nodeValue;
-      options.key = optionsNode.getElementsByTagName(
-          'key')[0].firstChild.nodeValue;
-      options.includeKS =
-          optionsNode.getElementsByTagName(
-              'displaykeysignature')[0].firstChild.nodeValue;
-      options.includeKS = (options.includeKS === 'true');
-      break;
-  }
+    switch (musicQType) {
+        case 'note-write':
+        case 'note-identify':
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.includeAlterations = optionsNode.getElementsByTagName(
+                    'includealterations')[0].firstChild.nodeValue;
+            options.includeAlterations = (options.includeAlterations === 'true');
+            break;
+        case 'keyboard-input':
+            options.includestaticnote = optionsNode.getElementsByTagName(
+                    'includestaticnote')[0].firstChild.nodeValue;
+            if (options.includestaticnote === 'true') {
+                options.staticnotepitchclass = additionalParams.pitchclass;
+                options.staticnoteregister = additionalParams.register;
+            }
+            break;
+        case 'keysignature-write':
+        case 'keysignature-identify':
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.key = optionsNode.getElementsByTagName(
+                    'key')[0].firstChild.nodeValue;
+            break;
+        case 'interval-write':
+        case 'interval-identify':
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.givenNote = [];
+            options.givenNote.ltr =
+                    optionsNode.getElementsByTagName('letter')[0].firstChild.nodeValue;
+            options.givenNote.acc =
+                    optionsNode.getElementsByTagName(
+                            'accidental')[0].firstChild.nodeValue;
+            options.givenNote.reg =
+                    optionsNode.getElementsByTagName('register')[0].firstChild.nodeValue;
+            break;
+        case 'scale-write':
+        case 'scale-identify':
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.givenNote = [];
+            options.givenNote.ltr =
+                    optionsNode.getElementsByTagName('letter')[0].firstChild.nodeValue;
+            options.givenNote.acc =
+                    optionsNode.getElementsByTagName(
+                            'accidental')[0].firstChild.nodeValue;
+            options.givenNote.reg =
+                    optionsNode.getElementsByTagName('register')[0].firstChild.nodeValue;
+            options.includeKS =
+                    optionsNode.getElementsByTagName(
+                            'displaykeysignature')[0].firstChild.nodeValue;
+            options.includeKS = (options.includeKS === 'true');
+            options.scaleType = optionsNode.getElementsByTagName(
+                    'scaletype')[0].firstChild.nodeValue;
+            break;
+        case 'chordquality-write':
+        case 'chordquality-identify':
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.maxNotes = additionalParams.maxnotes;
+            break;
+        case 'harmonicfunction-write':
+            options.maxNotes = additionalParams.maxnotes;
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.key = optionsNode.getElementsByTagName(
+                    'key')[0].firstChild.nodeValue;
+            options.includeKS =optionsNode.getElementsByTagName('displaykeysignature')[0].firstChild.nodeValue;
+            options.includeKS = (options.includeKS === 'true');
+            break;
+        case 'harmonicfunction-identify':
+            options.clef = optionsNode.getElementsByTagName('clef')[0].firstChild.nodeValue;
+            options.key = optionsNode.getElementsByTagName('key')[0].firstChild.nodeValue;
+            options.includeKS =optionsNode.getElementsByTagName('displaykeysignature')[0].firstChild.nodeValue;
+            options.includeKS = (options.includeKS === 'true');
+            break;
+        case 'melodic-dictation':
+            options.clef = optionsNode.getElementsByTagName('clef')[0].firstChild.nodeValue;
+            options.numberofnotes = optionsNode.getElementsByTagName('numberofnotes')[0].firstChild.nodeValue;
+            options.givenNote = [];
+            for (var index = 0; index < options.numberofnotes; index++) {
+                var note = {};
+                note.ltr = optionsNode.getElementsByTagName('letter')[0].firstChild.nodeValue;
+                note.acc = optionsNode.getElementsByTagName('accidental')[0].firstChild.nodeValue;
+                note.reg = optionsNode.getElementsByTagName('register')[0].firstChild.nodeValue;
+                options.givenNote.push(note);
+            }
+            options.includeKS = false;
+            options.showFirstNote =optionsNode.getElementsByTagName('showfirstnote')[0].firstChild.nodeValue;
+            options.showFirstNote = (options.showFirstNote === 'true');
+            break;
+    }
 
-  return options;
+    return options;
 
 };
 
@@ -327,8 +333,8 @@ NS.editForm = {};
  */
 NS.initEditForm = function () {
 
-  NS.editForm.setOptionVisibility();
-  NS.editForm.setFormOptionListeners();
+    NS.editForm.setOptionVisibility();
+    NS.editForm.setFormOptionListeners();
 
 };
 
@@ -339,15 +345,32 @@ NS.initEditForm = function () {
  * @return {Undefined}
  */
 NS.editForm.setFormOptionListeners = function () {
-
-  Y.all(
-      '#id_musictheory_musicqtype').on('change', function () {
-    var typeBtnNode = Y.one('#' + 'id_musictheory_updatemusicqtype');
-    if (typeBtnNode) {
-      typeBtnNode.simulate('click');
+    Y.all(
+        '#id_musictheory_musicqtype').on('change', function () {
+            var typeBtnNode = Y.one('#' + 'id_musictheory_updatemusicqtype');
+            if (typeBtnNode) {
+                typeBtnNode.simulate('click');
+            }
+        }
+    );
+    Y.all(
+        '#id_musictheory_numberofnotes').on('change', function () {
+            var typeBtnNode = Y.one('#' + 'id_updatebutton');
+            if (typeBtnNode) {
+                typeBtnNode.simulate('click');
+            }
+        }
+    );
+    var numberofnotes = Y.one('#id_musictheory_numberofnotes').get('value');
+    if(numberofnotes > 1
+        && location.href.indexOf("musictheory_numberofnotes") == -1
+        && !Y.one('#fgroup_id_musictheory_givennote1elementgroup')){
+        if(location.href.indexOf("?")>-1){
+            location.href = location.href+"&musictheory_numberofnotes="+numberofnotes;
+        }else{
+            location.href = location.href+"?musictheory_numberofnotes="+numberofnotes;
+        }
     }
-  });
-
 };
 
 /**
@@ -358,10 +381,10 @@ NS.editForm.setFormOptionListeners = function () {
  */
 NS.editForm.setOptionVisibility = function () {
 
-  var typeBtnNode = Y.one('#' + 'id_musictheory_updatemusicqtype');
-  if (typeBtnNode) {
-    typeBtnNode.hide();
-  }
+    var typeBtnNode = Y.one('#' + 'id_musictheory_updatemusicqtype');
+    if (typeBtnNode) {
+        typeBtnNode.hide();
+    }
 
 };
 
@@ -378,85 +401,85 @@ NS.editForm.setOptionVisibility = function () {
  */
 NS.getKeySign = function (key, clef) {
 
-  var tonic = key.substring(0, key.length - 1),
-      mode = key.substr(key.length - 1, 1),
-      trebleSharp = new Array('F#5', 'C#5', 'G#5', 'D#5', 'A#4', 'E#5', 'B#4'),
-      bassSharp = new Array('F#3', 'C#3', 'G#3', 'D#3', 'A#2', 'E#3', 'B#2'),
-      altoSharp = new Array('F#4', 'C#4', 'G#4', 'D#4', 'A#3', 'E#4', 'B#3'),
-      tenorSharp = new Array('F#3', 'C#4', 'G#3', 'D#4', 'A#3', 'E#4', 'B#3'),
-      trebleFlat = new Array('Bb4', 'Eb5', 'Ab4', 'Db5', 'Gb4', 'Cb5', 'Fb4'),
-      bassFlat = new Array('Bb2', 'Eb3', 'Ab2', 'Db3', 'Gb2', 'Cb3', 'Fb2'),
-      altoFlat = new Array('Bb3', 'Eb4', 'Ab3', 'Db4', 'Gb3', 'Cb4', 'Fb3'),
-      tenorFlat = new Array('Bb3', 'Eb4', 'Ab3', 'Db4', 'Gb3', 'Cb4', 'Fb3'),
-      sharpOrFlat = [],
-      accList = [],
-      numAccMajor = [],
-      relativeMajorKeys = [],
-      majorTonic,
-      acc;
+    var tonic = key.substring(0, key.length - 1),
+            mode = key.substr(key.length - 1, 1),
+            trebleSharp = new Array('F#5', 'C#5', 'G#5', 'D#5', 'A#4', 'E#5', 'B#4'),
+            bassSharp = new Array('F#3', 'C#3', 'G#3', 'D#3', 'A#2', 'E#3', 'B#2'),
+            altoSharp = new Array('F#4', 'C#4', 'G#4', 'D#4', 'A#3', 'E#4', 'B#3'),
+            tenorSharp = new Array('F#3', 'C#4', 'G#3', 'D#4', 'A#3', 'E#4', 'B#3'),
+            trebleFlat = new Array('Bb4', 'Eb5', 'Ab4', 'Db5', 'Gb4', 'Cb5', 'Fb4'),
+            bassFlat = new Array('Bb2', 'Eb3', 'Ab2', 'Db3', 'Gb2', 'Cb3', 'Fb2'),
+            altoFlat = new Array('Bb3', 'Eb4', 'Ab3', 'Db4', 'Gb3', 'Cb4', 'Fb3'),
+            tenorFlat = new Array('Bb3', 'Eb4', 'Ab3', 'Db4', 'Gb3', 'Cb4', 'Fb3'),
+            sharpOrFlat = [],
+            accList = [],
+            numAccMajor = [],
+            relativeMajorKeys = [],
+            majorTonic,
+            acc;
 
-  sharpOrFlat.Cn = 'sharp';
-  sharpOrFlat.Gn = 'sharp';
-  sharpOrFlat.Dn = 'sharp';
-  sharpOrFlat.An = 'sharp';
-  sharpOrFlat.En = 'sharp';
-  sharpOrFlat.Bn = 'sharp';
-  sharpOrFlat['F#'] = 'sharp';
-  sharpOrFlat['C#'] = 'sharp';
-  sharpOrFlat.Fn = 'flat';
-  sharpOrFlat.Bb = 'flat';
-  sharpOrFlat.Eb = 'flat';
-  sharpOrFlat.Ab = 'flat';
-  sharpOrFlat.Db = 'flat';
-  sharpOrFlat.Gb = 'flat';
-  sharpOrFlat.Cb = 'flat';
+    sharpOrFlat.Cn = 'sharp';
+    sharpOrFlat.Gn = 'sharp';
+    sharpOrFlat.Dn = 'sharp';
+    sharpOrFlat.An = 'sharp';
+    sharpOrFlat.En = 'sharp';
+    sharpOrFlat.Bn = 'sharp';
+    sharpOrFlat['F#'] = 'sharp';
+    sharpOrFlat['C#'] = 'sharp';
+    sharpOrFlat.Fn = 'flat';
+    sharpOrFlat.Bb = 'flat';
+    sharpOrFlat.Eb = 'flat';
+    sharpOrFlat.Ab = 'flat';
+    sharpOrFlat.Db = 'flat';
+    sharpOrFlat.Gb = 'flat';
+    sharpOrFlat.Cb = 'flat';
 
-  accList.treblesharp = trebleSharp;
-  accList.basssharp = bassSharp;
-  accList.altosharp = altoSharp;
-  accList.tenorsharp = tenorSharp;
-  accList.trebleflat = trebleFlat;
-  accList.bassflat = bassFlat;
-  accList.altoflat = altoFlat;
-  accList.tenorflat = tenorFlat;
+    accList.treblesharp = trebleSharp;
+    accList.basssharp = bassSharp;
+    accList.altosharp = altoSharp;
+    accList.tenorsharp = tenorSharp;
+    accList.trebleflat = trebleFlat;
+    accList.bassflat = bassFlat;
+    accList.altoflat = altoFlat;
+    accList.tenorflat = tenorFlat;
 
-  numAccMajor.Cn = 0;
-  numAccMajor.Gn = 1;
-  numAccMajor.Dn = 2;
-  numAccMajor.An = 3;
-  numAccMajor.En = 4;
-  numAccMajor.Bn = 5;
-  numAccMajor['F#'] = 6;
-  numAccMajor['C#'] = 7;
-  numAccMajor.Fn = 1;
-  numAccMajor.Bb = 2;
-  numAccMajor.Eb = 3;
-  numAccMajor.Ab = 4;
-  numAccMajor.Db = 5;
-  numAccMajor.Gb = 6;
-  numAccMajor.Cb = 7;
+    numAccMajor.Cn = 0;
+    numAccMajor.Gn = 1;
+    numAccMajor.Dn = 2;
+    numAccMajor.An = 3;
+    numAccMajor.En = 4;
+    numAccMajor.Bn = 5;
+    numAccMajor['F#'] = 6;
+    numAccMajor['C#'] = 7;
+    numAccMajor.Fn = 1;
+    numAccMajor.Bb = 2;
+    numAccMajor.Eb = 3;
+    numAccMajor.Ab = 4;
+    numAccMajor.Db = 5;
+    numAccMajor.Gb = 6;
+    numAccMajor.Cb = 7;
 
-  relativeMajorKeys.An = 'Cn';
-  relativeMajorKeys.En = 'Gn';
-  relativeMajorKeys.Bn = 'Dn';
-  relativeMajorKeys['F#'] = 'An';
-  relativeMajorKeys['C#'] = 'En';
-  relativeMajorKeys['G#'] = 'Bn';
-  relativeMajorKeys['D#'] = 'F#';
-  relativeMajorKeys['A#'] = 'C#';
-  relativeMajorKeys.Dn = 'Fn';
-  relativeMajorKeys.Gn = 'Bb';
-  relativeMajorKeys.Cn = 'Eb';
-  relativeMajorKeys.Fn = 'Ab';
-  relativeMajorKeys.Bb = 'Db';
-  relativeMajorKeys.Eb = 'Gb';
-  relativeMajorKeys.Ab = 'Cb';
+    relativeMajorKeys.An = 'Cn';
+    relativeMajorKeys.En = 'Gn';
+    relativeMajorKeys.Bn = 'Dn';
+    relativeMajorKeys['F#'] = 'An';
+    relativeMajorKeys['C#'] = 'En';
+    relativeMajorKeys['G#'] = 'Bn';
+    relativeMajorKeys['D#'] = 'F#';
+    relativeMajorKeys['A#'] = 'C#';
+    relativeMajorKeys.Dn = 'Fn';
+    relativeMajorKeys.Gn = 'Bb';
+    relativeMajorKeys.Cn = 'Eb';
+    relativeMajorKeys.Fn = 'Ab';
+    relativeMajorKeys.Bb = 'Db';
+    relativeMajorKeys.Eb = 'Gb';
+    relativeMajorKeys.Ab = 'Cb';
 
-  majorTonic = (mode === 'M') ? tonic : relativeMajorKeys[tonic];
-  acc = accList[clef + sharpOrFlat[majorTonic]];
-  acc = acc.slice(0, numAccMajor[majorTonic]);
+    majorTonic = (mode === 'M') ? tonic : relativeMajorKeys[tonic];
+    acc = accList[clef + sharpOrFlat[majorTonic]];
+    acc = acc.slice(0, numAccMajor[majorTonic]);
 
-  return acc;
+    return acc;
 
 };// This file is part of Moodle - http://moodle.org/
 //
@@ -535,10 +558,10 @@ NS.getKeySign = function (key, clef) {
  * </ul>
  * @return {undefined}
  */
-NS.XMLConverter = function(options) {
+NS.XMLConverter = function (options) {
 
-  this.options = options;
-  this.setNotesEditable = (options.containsUserInput) ? true : false;
+    this.options = options;
+    this.setNotesEditable = (options.containsUserInput) ? true : false;
 
 };
 
@@ -558,37 +581,39 @@ NS.XMLConverter = function(options) {
  *   </ul>
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getCanvasXML = function(input) {
+NS.XMLConverter.prototype.getCanvasXML = function (input) {
 
-  switch (this.options.musicQType) {
-    case 'note-write':
-      return this.getNoteWriteXML(input);
-    case 'note-identify':
-      return this.getNoteIdentifyXML(input);
-    case 'keyboard-input':
-      return this.getKeyboardInputXML(input);
-    case 'keysignature-write':
-      return this.getKSWriteXML(input);
-    case 'keysignature-identify':
-      return this.getKSIdentifyXML(input);
-    case 'interval-write':
-      return this.getIntervalWriteXML(input);
-    case 'interval-identify':
-      return this.getIntervalIdentifyXML(input);
-    case 'scale-write':
-      return this.getScaleWriteXML(input);
-    case 'scale-identify':
-      return this.getScaleIdentifyXML(input);
-    case 'chordquality-write':
-      return this.getChordQualityWriteXML(input);
-    case 'harmonicfunction-write':
-      return this.getHarmonicFunctionWriteXML(input);
-    case 'harmonicfunction-identify':
-    case 'chordquality-identify':
-      return this.getHarmonicFunctionIdentifyXML(input);
-    default:
-      return null;
-  }
+    switch (this.options.musicQType) {
+        case 'note-write':
+            return this.getNoteWriteXML(input);
+        case 'note-identify':
+            return this.getNoteIdentifyXML(input);
+        case 'keyboard-input':
+            return this.getKeyboardInputXML(input);
+        case 'keysignature-write':
+            return this.getKSWriteXML(input);
+        case 'keysignature-identify':
+            return this.getKSIdentifyXML(input);
+        case 'interval-write':
+            return this.getIntervalWriteXML(input);
+        case 'interval-identify':
+            return this.getIntervalIdentifyXML(input);
+        case 'scale-write':
+            return this.getScaleWriteXML(input);
+        case 'scale-identify':
+            return this.getScaleIdentifyXML(input);
+        case 'chordquality-write':
+            return this.getChordQualityWriteXML(input);
+        case 'harmonicfunction-write':
+            return this.getHarmonicFunctionWriteXML(input);
+        case 'harmonicfunction-identify':
+        case 'chordquality-identify':
+            return this.getHarmonicFunctionIdentifyXML(input);
+        case 'melodic-dictation':
+            return this.getMelodicDictationXML(input);
+        default:
+            return null;
+    }
 
 };
 
@@ -602,26 +627,26 @@ NS.XMLConverter.prototype.getCanvasXML = function(input) {
  * the Moodle music question subtype.
  */
 NS.XMLConverter.prototype.getCanvasTextOutput =
-    function(stateXML) {
-      switch (this.options.musicQType) {
-        case 'note-write':
-          return this.getNoteWriteTextOutput(stateXML);
-        case 'keyboard-input':
-          return this.getKeyboardInputTextOutput(stateXML);
-        case 'keysignature-write':
-          return this.getKSWriteTextOutput(stateXML);
-        case 'interval-write':
-          return this.getIntervalWriteTextOutput(stateXML);
-        case 'scale-write':
-          return this.getScaleWriteTextOutput(stateXML);
-        case 'chordquality-write':
-        case 'harmonicfunction-write':
-          return this.getHarmonicfunctionWriteTextOutput(stateXML);
-        default:
-          return '';
-      }
-      return '';
-    };
+        function (stateXML) {
+            switch (this.options.musicQType) {
+                case 'note-write':
+                    return this.getNoteWriteTextOutput(stateXML);
+                case 'keyboard-input':
+                    return this.getKeyboardInputTextOutput(stateXML);
+                case 'keysignature-write':
+                    return this.getKSWriteTextOutput(stateXML);
+                case 'interval-write':
+                    return this.getIntervalWriteTextOutput(stateXML);
+                case 'scale-write':
+                    return this.getScaleWriteTextOutput(stateXML);
+                case 'chordquality-write':
+                case 'harmonicfunction-write':
+                    return this.getHarmonicfunctionWriteTextOutput(stateXML);
+                default:
+                    return '';
+            }
+            return '';
+        };
 
 /**
  * Converts the MusThGUI's state from a XML to a simpler string describing
@@ -633,41 +658,39 @@ NS.XMLConverter.prototype.getCanvasTextOutput =
  * note writing questions.
  */
 NS.XMLConverter.prototype.getNoteWriteTextOutput =
-    function(stateXML) {
+        function (stateXML) {
 
-      var parsedXML,
-          acc,
-          respString,
-          noteXML,
-          staffXML,
-          i,
-          j;
+            var parsedXML,
+                    acc,
+                    respString,
+                    noteXML,
+                    staffXML,
+                    i,
+                    j;
 
+            parsedXML = Y.XML.parse(stateXML);
+            respString = '';
 
-      parsedXML = Y.XML.parse(stateXML);
-      respString = '';
+            staffXML = parsedXML.getElementsByTagName('Staff');
+            for (j = 0; j < staffXML.length; j++) {
+                noteXML = staffXML[j].getElementsByTagName('Note');
+                for (i = 0; i < noteXML.length; i++) {
+                    if (noteXML[i].getAttribute('editable') === 'true') {
+                        acc = noteXML[i].getAttribute('accidental');
+                        respString += noteXML[i].getAttribute('letter') + acc +
+                                noteXML[i].getAttribute('register') +
+                                '-' + staffXML[j].getAttribute('clef') + ',';
+                    }
+                }
+            }
+            if (respString.length > 0) {
+                respString = respString.substr(0, respString.length - 1);
+            } else {
+                respString = '';
+            }
+            return respString;
 
-      staffXML = parsedXML.getElementsByTagName('Staff');
-      for (j = 0; j < staffXML.length; j++) {
-        noteXML = staffXML[j].getElementsByTagName('Note');
-        for (i = 0; i < noteXML.length; i++) {
-          if (noteXML[i].getAttribute('editable') === 'true') {
-            acc = noteXML[i].getAttribute('accidental');
-            respString += noteXML[i].getAttribute('letter') + acc +
-                noteXML[i].getAttribute('register') +
-                '-' + staffXML[j].getAttribute('clef') + ',';
-          }
-        }
-      }
-      if (respString.length > 0) {
-        respString = respString.substr(0, respString.length - 1);
-      }
-      else {
-        respString = '';
-      }
-      return respString;
-
-    };
+        };
 
 /**
  * Converts the options and initial input for a note writing question
@@ -678,107 +701,102 @@ NS.XMLConverter.prototype.getNoteWriteTextOutput =
  * as a Moodle note writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getNoteWriteXML = function(input) {
+NS.XMLConverter.prototype.getNoteWriteXML = function (input) {
 
-  var stateXML,
-      inputParts,
-      inputSplit,
-      trebleNotes = [],
-      bassNotes = [],
-      i;
+    var stateXML,
+            inputParts,
+            inputSplit,
+            trebleNotes = [],
+            bassNotes = [],
+            i;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
 
-  if (this.options.clef !== 'grandstaff') {
-    stateXML += '<StaffSystem maxLedgerLines="4">\n';
-    stateXML += '<Staff clef="' + this.options.clef + '">\n';
-    stateXML += '<KeySign totalAccColumns="0" >';
-    stateXML += '</KeySign>';
-    stateXML += '<NoteColumns>';
-    stateXML += '<NoteColumn maxNotes="1" >';
+    if (this.options.clef !== 'grandstaff') {
+        stateXML += '<StaffSystem maxLedgerLines="4">\n';
+        stateXML += '<Staff clef="' + this.options.clef + '">\n';
+        stateXML += '<KeySign totalAccColumns="0" >';
+        stateXML += '</KeySign>';
+        stateXML += '<NoteColumns>';
+        stateXML += '<NoteColumn maxNotes="1" >';
 
-    if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-      inputParts = this.noteNameToParts(input);
-      stateXML += '<Note letter="' + inputParts.ltr + '" ';
-      stateXML += 'register="' + inputParts.reg + '" ';
-      stateXML += 'accidental="' + inputParts.acc + '" ';
-      stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
-    }
-
-    stateXML += '</NoteColumn>';
-    stateXML += '</NoteColumns>';
-
-    stateXML += '</Staff>\n';
-    stateXML += '</StaffSystem>\n';
-  }
-  else {
-    if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-      inputSplit = input.split(',');
-      for (i = 0; i < inputSplit.length; i++) {
-        inputParts = this.noteNameToParts(inputSplit[i]);
-        if (inputParts.clef === 'treble') {
-          trebleNotes.push(inputParts);
+        if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+            inputParts = this.noteNameToParts(input);
+            stateXML += '<Note letter="' + inputParts.ltr + '" ';
+            stateXML += 'register="' + inputParts.reg + '" ';
+            stateXML += 'accidental="' + inputParts.acc + '" ';
+            stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
         }
-        else if (inputParts.clef === 'bass') {
-          bassNotes.push(inputParts);
-        }
-        else {
-          if (parseInt(inputParts.reg, 10) >= 4) {
-            trebleNotes.push(inputParts);
-          }
-          else {
-            bassNotes.push(inputParts);
-          }
-        }
-      }
-    }
-    stateXML += '<StaffSystem maxLedgerLines="4">\n';
-    stateXML += '<Staff clef="treble">\n';
-    stateXML += '<KeySign totalAccColumns="0" >';
-    stateXML += '</KeySign>';
-    stateXML += '<NoteColumns>';
-    stateXML += '<NoteColumn maxNotes="1" >';
-    if (trebleNotes.length > 0) {
-      stateXML += '<Note letter="' + trebleNotes[0].ltr + '" ';
-      stateXML += 'register="' + trebleNotes[0].reg + '" ';
-      stateXML += 'accidental="' + trebleNotes[0].acc + '" ';
-      stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
-    }
-    stateXML += '</NoteColumn>';
-    stateXML += '</NoteColumns>';
-    stateXML += '</Staff>\n';
-    stateXML += '<Staff clef="bass">\n';
-    stateXML += '<KeySign totalAccColumns="0" >';
-    stateXML += '</KeySign>';
-    stateXML += '<NoteColumns>';
-    stateXML += '<NoteColumn maxNotes="1" >';
-    if (bassNotes.length > 0) {
-      stateXML += '<Note letter="' + bassNotes[0].ltr + '" ';
-      stateXML += 'register="' + bassNotes[0].reg + '" ';
-      stateXML += 'accidental="' + bassNotes[0].acc + '" ';
-      stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
-    }
-    stateXML += '</NoteColumn>';
-    stateXML += '</NoteColumns>';
-    stateXML += '</Staff>\n';
-    stateXML += '</StaffSystem>\n';
-  }
 
-  if (this.options.includeAlterations) {
-    stateXML += '    <Toolbars>\n';
-    stateXML += '        <AccidentalToolbar>\n';
-    stateXML += '            <Button symbol="n"/>';
-    stateXML += '            <Button symbol="#"/>';
-    stateXML += '            <Button symbol="b"/>';
-    stateXML += '            <Button symbol="x"/>';
-    stateXML += '            <Button symbol="bb"/>';
-    stateXML += '        </AccidentalToolbar>\n';
-    stateXML += '    </Toolbars>\n';
-  }
-  stateXML += '</MusThGUI>';
+        stateXML += '</NoteColumn>';
+        stateXML += '</NoteColumns>';
 
-  return stateXML;
+        stateXML += '</Staff>\n';
+        stateXML += '</StaffSystem>\n';
+    } else {
+        if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+            inputSplit = input.split(',');
+            for (i = 0; i < inputSplit.length; i++) {
+                inputParts = this.noteNameToParts(inputSplit[i]);
+                if (inputParts.clef === 'treble') {
+                    trebleNotes.push(inputParts);
+                } else if (inputParts.clef === 'bass') {
+                    bassNotes.push(inputParts);
+                } else {
+                    if (parseInt(inputParts.reg, 10) >= 4) {
+                        trebleNotes.push(inputParts);
+                    } else {
+                        bassNotes.push(inputParts);
+                    }
+                }
+            }
+        }
+        stateXML += '<StaffSystem maxLedgerLines="4">\n';
+        stateXML += '<Staff clef="treble">\n';
+        stateXML += '<KeySign totalAccColumns="0" >';
+        stateXML += '</KeySign>';
+        stateXML += '<NoteColumns>';
+        stateXML += '<NoteColumn maxNotes="1" >';
+        if (trebleNotes.length > 0) {
+            stateXML += '<Note letter="' + trebleNotes[0].ltr + '" ';
+            stateXML += 'register="' + trebleNotes[0].reg + '" ';
+            stateXML += 'accidental="' + trebleNotes[0].acc + '" ';
+            stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
+        }
+        stateXML += '</NoteColumn>';
+        stateXML += '</NoteColumns>';
+        stateXML += '</Staff>\n';
+        stateXML += '<Staff clef="bass">\n';
+        stateXML += '<KeySign totalAccColumns="0" >';
+        stateXML += '</KeySign>';
+        stateXML += '<NoteColumns>';
+        stateXML += '<NoteColumn maxNotes="1" >';
+        if (bassNotes.length > 0) {
+            stateXML += '<Note letter="' + bassNotes[0].ltr + '" ';
+            stateXML += 'register="' + bassNotes[0].reg + '" ';
+            stateXML += 'accidental="' + bassNotes[0].acc + '" ';
+            stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
+        }
+        stateXML += '</NoteColumn>';
+        stateXML += '</NoteColumns>';
+        stateXML += '</Staff>\n';
+        stateXML += '</StaffSystem>\n';
+    }
+
+    if (this.options.includeAlterations) {
+        stateXML += '    <Toolbars>\n';
+        stateXML += '        <AccidentalToolbar>\n';
+        stateXML += '            <Button symbol="n"/>';
+        stateXML += '            <Button symbol="#"/>';
+        stateXML += '            <Button symbol="b"/>';
+        stateXML += '            <Button symbol="x"/>';
+        stateXML += '            <Button symbol="bb"/>';
+        stateXML += '        </AccidentalToolbar>\n';
+        stateXML += '    </Toolbars>\n';
+    }
+    stateXML += '</MusThGUI>';
+    return stateXML;
 };
 
 /**
@@ -790,79 +808,78 @@ NS.XMLConverter.prototype.getNoteWriteXML = function(input) {
  * as a Moodle key signature writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getNoteIdentifyXML = function(input) {
+NS.XMLConverter.prototype.getNoteIdentifyXML = function (input) {
 
-  var stateXML,
-      inputParts;
-
-  inputParts = this.noteNameToParts(input);
-
-  if (this.options.clef !== 'grandstaff') {
-    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-        '" accidentalCarryOver="true">\n';
-    stateXML += '<StaffSystem maxLedgerLines="4">\n';
-    stateXML += '<Staff clef="' + this.options.clef + '">\n';
-    stateXML += '<KeySign totalAccColumns="0" >';
-    stateXML += '</KeySign>';
-    stateXML += '<NoteColumns>';
-    stateXML += '<NoteColumn maxNotes="1" >';
+    var stateXML,
+            inputParts;
 
     inputParts = this.noteNameToParts(input);
-    stateXML += '<Note letter="' + inputParts.ltr + '" ';
-    stateXML += 'register="' + inputParts.reg + '" ';
-    stateXML += 'accidental="' + inputParts.acc + '" ';
-    stateXML += 'noteValue="whole" editable="false" />';
 
-    stateXML += '</NoteColumn>';
-    stateXML += '</NoteColumns>';
+    if (this.options.clef !== 'grandstaff') {
+        stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+                '" accidentalCarryOver="true">\n';
+        stateXML += '<StaffSystem maxLedgerLines="4">\n';
+        stateXML += '<Staff clef="' + this.options.clef + '">\n';
+        stateXML += '<KeySign totalAccColumns="0" >';
+        stateXML += '</KeySign>';
+        stateXML += '<NoteColumns>';
+        stateXML += '<NoteColumn maxNotes="1" >';
 
-    stateXML += '</Staff>\n';
-    stateXML += '</StaffSystem>\n';
-    stateXML += '</MusThGUI>';
-  }
-  else {
-    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-        '" accidentalCarryOver="true">\n';
-    stateXML += '<StaffSystem maxLedgerLines="4">\n';
-    stateXML += '<Staff clef="treble">\n';
-    stateXML += '<KeySign totalAccColumns="0" >';
-    stateXML += '</KeySign>';
-    stateXML += '<NoteColumns>';
-    stateXML += '<NoteColumn maxNotes="1" >';
+        inputParts = this.noteNameToParts(input);
+        stateXML += '<Note letter="' + inputParts.ltr + '" ';
+        stateXML += 'register="' + inputParts.reg + '" ';
+        stateXML += 'accidental="' + inputParts.acc + '" ';
+        stateXML += 'noteValue="whole" editable="false" />';
 
-    if (parseInt(inputParts.reg, 10) >= 4) {
-      stateXML += '<Note letter="' + inputParts.ltr + '" ';
-      stateXML += 'register="' + inputParts.reg + '" ';
-      stateXML += 'accidental="' + inputParts.acc + '" ';
-      stateXML += 'noteValue="whole" editable="false" />';
+        stateXML += '</NoteColumn>';
+        stateXML += '</NoteColumns>';
+
+        stateXML += '</Staff>\n';
+        stateXML += '</StaffSystem>\n';
+        stateXML += '</MusThGUI>';
+    } else {
+        stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+                '" accidentalCarryOver="true">\n';
+        stateXML += '<StaffSystem maxLedgerLines="4">\n';
+        stateXML += '<Staff clef="treble">\n';
+        stateXML += '<KeySign totalAccColumns="0" >';
+        stateXML += '</KeySign>';
+        stateXML += '<NoteColumns>';
+        stateXML += '<NoteColumn maxNotes="1" >';
+
+        if (parseInt(inputParts.reg, 10) >= 4) {
+            stateXML += '<Note letter="' + inputParts.ltr + '" ';
+            stateXML += 'register="' + inputParts.reg + '" ';
+            stateXML += 'accidental="' + inputParts.acc + '" ';
+            stateXML += 'noteValue="whole" editable="false" />';
+        }
+        stateXML += '</NoteColumn>';
+        stateXML += '</NoteColumns>';
+
+        stateXML += '</Staff>\n';
+
+        stateXML += '<Staff clef="bass">\n';
+        stateXML += '<KeySign totalAccColumns="0" >';
+        stateXML += '</KeySign>';
+        stateXML += '<NoteColumns>';
+        stateXML += '<NoteColumn maxNotes="1" >';
+
+        if (parseInt(inputParts.reg, 10) < 4) {
+            stateXML += '<Note letter="' + inputParts.ltr + '" ';
+            stateXML += 'register="' + inputParts.reg + '" ';
+            stateXML += 'accidental="' + inputParts.acc + '" ';
+            stateXML += 'noteValue="whole" editable="false" />';
+        }
+
+        stateXML += '</NoteColumn>';
+        stateXML += '</NoteColumns>';
+
+        stateXML += '</Staff>\n';
+
+        stateXML += '</StaffSystem>\n';
+        stateXML += '</MusThGUI>';
     }
-    stateXML += '</NoteColumn>';
-    stateXML += '</NoteColumns>';
-
-    stateXML += '</Staff>\n';
-
-    stateXML += '<Staff clef="bass">\n';
-    stateXML += '<KeySign totalAccColumns="0" >';
-    stateXML += '</KeySign>';
-    stateXML += '<NoteColumns>';
-    stateXML += '<NoteColumn maxNotes="1" >';
-
-    if (parseInt(inputParts.reg, 10) < 4) {
-      stateXML += '<Note letter="' + inputParts.ltr + '" ';
-      stateXML += 'register="' + inputParts.reg + '" ';
-      stateXML += 'accidental="' + inputParts.acc + '" ';
-      stateXML += 'noteValue="whole" editable="false" />';
-    }
-
-    stateXML += '</NoteColumn>';
-    stateXML += '</NoteColumns>';
-
-    stateXML += '</Staff>\n';
-
-    stateXML += '</StaffSystem>\n';
-    stateXML += '</MusThGUI>';
-  }
-  return stateXML;
+    return stateXML;
 };
 
 /**
@@ -875,34 +892,33 @@ NS.XMLConverter.prototype.getNoteIdentifyXML = function(input) {
  * keyboard input questions.
  */
 NS.XMLConverter.prototype.getKeyboardInputTextOutput =
-    function(stateXML) {
+        function (stateXML) {
 
-      var parsedXML,
-          pitchClass,
-          register,
-          respString,
-          selKeysXML,
-          i;
+            var parsedXML,
+                    pitchClass,
+                    register,
+                    respString,
+                    selKeysXML,
+                    i;
 
-      parsedXML = Y.XML.parse(stateXML);
-      respString = '';
+            parsedXML = Y.XML.parse(stateXML);
+            respString = '';
 
-      selKeysXML = parsedXML.getElementsByTagName('selectedkey');
-      for (i = 0; i < selKeysXML.length; i++) {
-        pitchClass = selKeysXML[i].getAttribute('pitchclass');
-        register = selKeysXML[i].getAttribute('register');
-        respString += pitchClass + '-' + register + ',';
-      }
-      if (respString.length > 0) {
-        respString = respString.substr(0, respString.length - 1);
-      }
-      else {
-        respString = '';
-      }
+            selKeysXML = parsedXML.getElementsByTagName('selectedkey');
+            for (i = 0; i < selKeysXML.length; i++) {
+                pitchClass = selKeysXML[i].getAttribute('pitchclass');
+                register = selKeysXML[i].getAttribute('register');
+                respString += pitchClass + '-' + register + ',';
+            }
+            if (respString.length > 0) {
+                respString = respString.substr(0, respString.length - 1);
+            } else {
+                respString = '';
+            }
 
-      return respString;
+            return respString;
 
-    };
+        };
 
 /**
  * Converts the options and initial input for a keyboard input question
@@ -913,30 +929,30 @@ NS.XMLConverter.prototype.getKeyboardInputTextOutput =
  * as a Moodle keyboard input writing response.
  * @return {String} A KeyboardInput compatible XML string.
  */
-NS.XMLConverter.prototype.getKeyboardInputXML = function(input) {
+NS.XMLConverter.prototype.getKeyboardInputXML = function (input) {
 
-  var stateXML;
+    var stateXML;
 
-  stateXML = '<keyboardinput maxkeys="1" canvasEditable="' +
-      this.options.editable + '">\n';
-  stateXML += '<givenkeys>\n';
-  if (this.options.includestaticnote === 'true') {
-    stateXML += '<givenkey pitchclass="' + this.options.staticnotepitchclass +
-        '" register="' + this.options.staticnoteregister + '" />';
-  }
-  stateXML += '</givenkeys>\n';
-  stateXML += '<selectedkeys>\n';
-  if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-    var resp = input.split('-');
-    var pitchClass = resp[0];
-    var register = resp[1];
-    stateXML += '<selectedkey pitchclass = "' + pitchClass + '" register = "' +
-        register + '" />';
-  }
-  stateXML += '</selectedkeys>\n';
-  stateXML += '</keyboardinput>';
+    stateXML = '<keyboardinput maxkeys="1" canvasEditable="' +
+            this.options.editable + '">\n';
+    stateXML += '<givenkeys>\n';
+    if (this.options.includestaticnote === 'true') {
+        stateXML += '<givenkey pitchclass="' + this.options.staticnotepitchclass +
+                '" register="' + this.options.staticnoteregister + '" />';
+    }
+    stateXML += '</givenkeys>\n';
+    stateXML += '<selectedkeys>\n';
+    if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+        var resp = input.split('-');
+        var pitchClass = resp[0];
+        var register = resp[1];
+        stateXML += '<selectedkey pitchclass = "' + pitchClass + '" register = "' +
+                register + '" />';
+    }
+    stateXML += '</selectedkeys>\n';
+    stateXML += '</keyboardinput>';
 
-  return stateXML;
+    return stateXML;
 };
 
 /**
@@ -948,25 +964,24 @@ NS.XMLConverter.prototype.getKeyboardInputXML = function(input) {
  * @return {String} A string describing the state in a format compatible for key
  * signature writing questions.
  */
-NS.XMLConverter.prototype.getKSWriteTextOutput = function(stateXML) {
+NS.XMLConverter.prototype.getKSWriteTextOutput = function (stateXML) {
 
-  var parsedXML = Y.XML.parse(stateXML),
-      respString = '',
-      accXML = parsedXML.getElementsByTagName('Accidental'),
-      i;
+    var parsedXML = Y.XML.parse(stateXML),
+            respString = '',
+            accXML = parsedXML.getElementsByTagName('Accidental'),
+            i;
 
-  for (i = 0; i < accXML.length; i++) {
-    respString += accXML[i].getAttribute('letter') +
-        accXML[i].getAttribute('type') +
-        accXML[i].getAttribute('register') + ',';
-  }
-  if (respString.length > 0) {
-    respString = respString.substr(0, respString.length - 1);
-  }
-  else {
-    respString = '';
-  }
-  return respString;
+    for (i = 0; i < accXML.length; i++) {
+        respString += accXML[i].getAttribute('letter') +
+                accXML[i].getAttribute('type') +
+                accXML[i].getAttribute('register') + ',';
+    }
+    if (respString.length > 0) {
+        respString = respString.substr(0, respString.length - 1);
+    } else {
+        respString = '';
+    }
+    return respString;
 
 };
 
@@ -979,46 +994,45 @@ NS.XMLConverter.prototype.getKSWriteTextOutput = function(stateXML) {
  * as a Moodle key signature writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getKSWriteXML = function(input) {
+NS.XMLConverter.prototype.getKSWriteXML = function (input) {
 
-  var stateXML,
-      resp,
-      i;
+    var stateXML,
+            resp,
+            i;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="0">\n';
-  stateXML += '<Staff clef="' + this.options.clef + '">\n';
-  stateXML += '<KeySign totalAccColumns="7">\n';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="0">\n';
+    stateXML += '<Staff clef="' + this.options.clef + '">\n';
+    stateXML += '<KeySign totalAccColumns="7">\n';
 
-  if (input === '' || input === null || typeof(input) === 'undefined') {
-    resp = null;
-  }
-  else {
-    resp = input.split(',');
-  }
-
-  if (resp !== null) {
-    for (i = 0; i < resp.length; i++) {
-      stateXML += '<Accidental type="' + resp[i].substr(1, 1) +
-          '" letter="' + resp[i].substr(0, 1) +
-          '" register="' + resp[i].substr(2, 1) +
-          '" editable="' + this.setNotesEditable + '" />\n';
+    if (input === '' || input === null || typeof (input) === 'undefined') {
+        resp = null;
+    } else {
+        resp = input.split(',');
     }
-  }
 
-  stateXML += '</KeySign>\n';
-  stateXML += '</Staff>\n';
-  stateXML += '</StaffSystem>\n';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="#"/>\n';
-  stateXML += '            <Button symbol="b"/>\n';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
+    if (resp !== null) {
+        for (i = 0; i < resp.length; i++) {
+            stateXML += '<Accidental type="' + resp[i].substr(1, 1) +
+                    '" letter="' + resp[i].substr(0, 1) +
+                    '" register="' + resp[i].substr(2, 1) +
+                    '" editable="' + this.setNotesEditable + '" />\n';
+        }
+    }
 
-  return stateXML;
+    stateXML += '</KeySign>\n';
+    stateXML += '</Staff>\n';
+    stateXML += '</StaffSystem>\n';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="#"/>\n';
+    stateXML += '            <Button symbol="b"/>\n';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
+
+    return stateXML;
 };
 
 /**
@@ -1030,46 +1044,45 @@ NS.XMLConverter.prototype.getKSWriteXML = function(input) {
  * as a Moodle key signature identification response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getKSIdentifyXML = function(input) {
+NS.XMLConverter.prototype.getKSIdentifyXML = function (input) {
 
-  var stateXML,
-      resp,
-      i;
+    var stateXML,
+            resp,
+            i;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="0">\n';
-  stateXML += '<Staff clef="' + this.options.clef + '">\n';
-  stateXML += '<KeySign totalAccColumns="7">\n';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="0">\n';
+    stateXML += '<Staff clef="' + this.options.clef + '">\n';
+    stateXML += '<KeySign totalAccColumns="7">\n';
 
-  if (input === '' || input === null || typeof(input) === 'undefined') {
-    resp = null;
-  }
-  else {
-    resp = input.split(',');
-  }
-
-  if (resp !== null) {
-    for (i = 0; i < resp.length; i++) {
-      stateXML += '<Accidental type="' + resp[i].substr(1, 1) +
-          '" letter="' + resp[i].substr(0, 1) +
-          '" register="' + resp[i].substr(2, 1) +
-          '" editable="false" />\n';
+    if (input === '' || input === null || typeof (input) === 'undefined') {
+        resp = null;
+    } else {
+        resp = input.split(',');
     }
-  }
 
-  stateXML += '</KeySign>\n';
-  stateXML += '</Staff>\n';
-  stateXML += '</StaffSystem>\n';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="#"/>\n';
-  stateXML += '            <Button symbol="b"/>\n';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
+    if (resp !== null) {
+        for (i = 0; i < resp.length; i++) {
+            stateXML += '<Accidental type="' + resp[i].substr(1, 1) +
+                    '" letter="' + resp[i].substr(0, 1) +
+                    '" register="' + resp[i].substr(2, 1) +
+                    '" editable="false" />\n';
+        }
+    }
 
-  return stateXML;
+    stateXML += '</KeySign>\n';
+    stateXML += '</Staff>\n';
+    stateXML += '</StaffSystem>\n';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="#"/>\n';
+    stateXML += '            <Button symbol="b"/>\n';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
+
+    return stateXML;
 };
 
 /**
@@ -1082,31 +1095,31 @@ NS.XMLConverter.prototype.getKSIdentifyXML = function(input) {
  * scale writing questions.
  */
 NS.XMLConverter.prototype.getScaleWriteTextOutput =
-    function(stateXML) {
+        function (stateXML) {
 
-      var parsedXML = Y.XML.parse(stateXML),
-          respString = '',
-          noteColXML = parsedXML.getElementsByTagName('NoteColumn'),
-          i = 0,
-          noteXML,
-          acc;
+            var parsedXML = Y.XML.parse(stateXML),
+                    respString = '',
+                    noteColXML = parsedXML.getElementsByTagName('NoteColumn'),
+                    i = 0,
+                    noteXML,
+                    acc;
 
-      for (i = 0; i < noteColXML.length; i++) {
-        noteXML = noteColXML[i].getElementsByTagName('Note')[0];
-        if (typeof(noteXML) !== 'undefined' && noteXML !== null) {
-          acc = noteXML.getAttribute('accidental');
-          respString += noteXML.getAttribute('letter') + acc +
-              noteXML.getAttribute('register');
-        }
-        respString += ',';
-      }
-      for (i; i < 8; i++) {
-        respString += ',';
-      }
-      respString = respString.substr(0, respString.length - 1);
-      return respString;
+            for (i = 0; i < noteColXML.length; i++) {
+                noteXML = noteColXML[i].getElementsByTagName('Note')[0];
+                if (typeof (noteXML) !== 'undefined' && noteXML !== null) {
+                    acc = noteXML.getAttribute('accidental');
+                    respString += noteXML.getAttribute('letter') + acc +
+                            noteXML.getAttribute('register');
+                }
+                respString += ',';
+            }
+            for (i; i < 8; i++) {
+                respString += ',';
+            }
+            respString = respString.substr(0, respString.length - 1);
+            return respString;
 
-    };
+        };
 
 /**
  * Converts the options and initial input for a scale writing
@@ -1117,111 +1130,206 @@ NS.XMLConverter.prototype.getScaleWriteTextOutput =
  * as a Moodle scale writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getScaleWriteXML = function(input) {
+NS.XMLConverter.prototype.getScaleWriteXML = function (input) {
 
-  var i,
-      noteParts,
-      keySign,
-      key = this.options.givenNote.ltr + this.options.givenNote.acc,
-      stateXML,
-      resp,
-      scaleLength;
+    var i,
+            noteParts,
+            keySign,
+            key = this.options.givenNote.ltr + this.options.givenNote.acc,
+            stateXML,
+            resp,
+            scaleLength;
 
-  if (this.options.scaleType === 'major') {
+    if (this.options.scaleType === 'major') {
+        key += 'M';
+    } else {
+        key += 'm';
+    }
+    if (this.options.includeKS) {
+        keySign = new NS.getKeySign(key, this.options.clef);
+    } else {
+        keySign = [];
+    }
+
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="' + this.options.includeKS + '">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">\n';
+    stateXML += '<Staff clef="' + this.options.clef + '">\n';
+    stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
+    for (i = 0; i < keySign.length; i++) {
+        noteParts = this.noteNameToParts(keySign[i]);
+        stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
+                noteParts.ltr + '" register="' + noteParts.reg + '" ' +
+                'editable="false" />';
+    }
+    stateXML += '</KeySign>\n';
+
+    if (input === '' || input === null || typeof (input) === 'undefined') {
+        resp = null;
+    } else {
+        resp = input.split(',');
+    }
+
+    stateXML += '<NoteColumns>';
+
+    if (resp !== null) {
+
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<NoteColumn maxNotes="1" >';
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                if (i === 0) {
+                    stateXML += 'noteValue="whole" editable="false" />';
+                } else {
+                    stateXML += 'noteValue="whole" editable="' +
+                            this.setNotesEditable + '" />';
+                }
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
+        }
+    } else {
+        if (this.options.scaleType === 'melodic') {
+            scaleLength = 15;
+        } else {
+            scaleLength = 8;
+        }
+        for (i = 0; i < scaleLength; i++) {
+            if (i === 0) {
+                stateXML += '<NoteColumn maxNotes="1">';
+                stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
+                stateXML += 'register="' + this.options.givenNote.reg + '" ';
+                stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
+                stateXML += 'noteValue="whole" editable="false" />';
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
+        }
+    }
+    stateXML += '</NoteColumns>';
+
+    stateXML += '</Staff>\n';
+    stateXML += '</StaffSystem>\n';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
+
+    return stateXML;
+
+};
+
+/**
+ * Converts the options and initial input for a scale writing
+ * question into an XML string that can be passed to a MusThGUI instance.
+ *
+ * @method getMelodicDictationXML
+ * @param {String} input Provides the initial input as a string, formatted
+ * as a Moodle scale writing response.
+ * @return {String} A MusThGUI compatible XML string.
+ */
+NS.XMLConverter.prototype.getMelodicDictationXML = function (input) {
+
+    var i,
+            noteParts,
+            keySign,
+            key = this.options.givenNote.ltr + this.options.givenNote.acc,
+            stateXML,
+            resp;
+
+    // if (this.options.scaleType === 'major') {
+    //     key += 'M';
+    // } else {
+    //     key += 'm';
+    // }
     key += 'M';
-  }
-  else {
-    key += 'm';
-  }
-  if (this.options.includeKS) {
-    keySign = new NS.getKeySign(key, this.options.clef);
-  }
-  else {
-    keySign = [];
-  }
+    if (this.options.includeKS) {
+        keySign = new NS.getKeySign(key, this.options.clef);
+    } else {
+        keySign = [];
+    }
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="' + this.options.includeKS + '">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">\n';
-  stateXML += '<Staff clef="' + this.options.clef + '">\n';
-  stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
-  for (i = 0; i < keySign.length; i++) {
-    noteParts = this.noteNameToParts(keySign[i]);
-    stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
-        noteParts.ltr + '" register="' + noteParts.reg + '" ' +
-        'editable="false" />';
-  }
-  stateXML += '</KeySign>\n';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="' + this.options.includeKS + '">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">\n';
+    stateXML += '<Staff clef="' + this.options.clef + '">\n';
+    stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
+    for (i = 0; i < keySign.length; i++) {
+        noteParts = this.noteNameToParts(keySign[i]);
+        stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
+                noteParts.ltr + '" register="' + noteParts.reg + '" ' +
+                'editable="false" />';
+    }
+    stateXML += '</KeySign>\n';
 
-  if (input === '' || input === null || typeof(input) === 'undefined') {
-    resp = null;
-  }
-  else {
-    resp = input.split(',');
-  }
+    if (input === '' || input === null || typeof (input) === 'undefined') {
+        resp = null;
+    } else {
+        resp = input.split(',');
+    }
+    stateXML += '<NoteColumns>';
 
-  stateXML += '<NoteColumns>';
+    if (resp !== null) {
 
-  if (resp !== null) {
-
-    for (i = 0; i < resp.length; i++) {
-      if (resp[i] !== '') {
-        noteParts = this.noteNameToParts(resp[i]);
-        stateXML += '<NoteColumn maxNotes="1" >';
-        stateXML += '<Note letter="' + noteParts.ltr + '" ';
-        stateXML += 'register="' + noteParts.reg + '" ';
-        stateXML += 'accidental="' + noteParts.acc + '" ';
-        if (i === 0) {
-          stateXML += 'noteValue="whole" editable="false" />';
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<NoteColumn maxNotes="1" >';
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                if (i === 0) {
+                    stateXML += 'noteValue="whole" editable="false" />';
+                } else {
+                    stateXML += 'noteValue="whole" editable="' +
+                            this.setNotesEditable + '" />';
+                }
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
         }
-        else {
-          stateXML += 'noteValue="whole" editable="' +
-              this.setNotesEditable + '" />';
+    } else {
+        for (i = 0; i < this.options.numberofnotes; i++) {
+            if (i === 0 && this.options.showFirstNote === true) {
+                stateXML += '<NoteColumn maxNotes="1">';
+                stateXML += '<Note letter="' + this.options.givenNote[0].ltr + '" ';
+                stateXML += 'register="' + this.options.givenNote[0].reg + '" ';
+                stateXML += 'accidental="' + this.options.givenNote[0].acc + '" ';
+                stateXML += 'noteValue="whole" editable="false" />';
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
         }
-        stateXML += '</NoteColumn>';
-      }
-      else {
-        stateXML += '<NoteColumn maxNotes="1" />';
-      }
     }
-  }
-  else {
-    if (this.options.scaleType === 'melodic') {
-      scaleLength = 15;
-    }
-    else {
-      scaleLength = 8;
-    }
-    for (i = 0; i < scaleLength; i++) {
-      if (i === 0) {
-        stateXML += '<NoteColumn maxNotes="1">';
-        stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
-        stateXML += 'register="' + this.options.givenNote.reg + '" ';
-        stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
-        stateXML += 'noteValue="whole" editable="false" />';
-        stateXML += '</NoteColumn>';
-      }
-      else {
-        stateXML += '<NoteColumn maxNotes="1" />';
-      }
-    }
-  }
-  stateXML += '</NoteColumns>';
+    stateXML += '</NoteColumns>';
 
-  stateXML += '</Staff>\n';
-  stateXML += '</StaffSystem>\n';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="n"/>';
-  stateXML += '            <Button symbol="#"/>';
-  stateXML += '            <Button symbol="b"/>';
-  stateXML += '            <Button symbol="x"/>';
-  stateXML += '            <Button symbol="bb"/>';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
+    stateXML += '</Staff>\n';
+    stateXML += '</StaffSystem>\n';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
 
-  return stateXML;
+    return stateXML;
 
 };
 
@@ -1234,97 +1342,88 @@ NS.XMLConverter.prototype.getScaleWriteXML = function(input) {
  * as a Moodle scale writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getScaleIdentifyXML = function(input) {
+NS.XMLConverter.prototype.getScaleIdentifyXML = function (input) {
 
-  var i,
-      noteParts,
-      keySign,
-      key = this.options.givenNote.ltr + this.options.givenNote.acc,
-      stateXML,
-      resp,
-      scaleLength;
+    var i,
+            noteParts,
+            keySign,
+            key = this.options.givenNote.ltr + this.options.givenNote.acc,
+            stateXML,
+            resp,
+            scaleLength;
 
-  if (this.options.scaleType === 'major') {
-    key += 'M';
-  }
-  else {
-    key += 'm';
-  }
-  console.log(this.options.scaleType);
-  if (this.options.includeKS) {
-    keySign = new NS.getKeySign(key, this.options.clef);
-  }
-  else {
-    keySign = [];
-  }
-
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="' + this.options.includeKS + '">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">\n';
-  stateXML += '<Staff clef="' + this.options.clef + '">\n';
-  stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
-  for (i = 0; i < keySign.length; i++) {
-    noteParts = this.noteNameToParts(keySign[i]);
-    stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
-        noteParts.ltr + '" register="' + noteParts.reg + '" ' +
-        'editable="false" />';
-  }
-  stateXML += '</KeySign>\n';
-
-  if (input === '' || input === null || typeof(input) === 'undefined') {
-    resp = null;
-  }
-  else {
-    resp = input.split(',');
-  }
-
-  stateXML += '<NoteColumns>';
-
-  if (resp !== null) {
-
-    for (i = 0; i < resp.length; i++) {
-      if (resp[i] !== '') {
-        noteParts = this.noteNameToParts(resp[i]);
-        stateXML += '<NoteColumn maxNotes="1" >';
-        stateXML += '<Note letter="' + noteParts.ltr + '" ';
-        stateXML += 'register="' + noteParts.reg + '" ';
-        stateXML += 'accidental="' + noteParts.acc + '" ';
-        stateXML += 'noteValue="whole" editable="false" />';
-        stateXML += '</NoteColumn>';
-      }
-      else {
-        stateXML += '<NoteColumn maxNotes="1" />';
-      }
+    if (this.options.scaleType === 'major') {
+        key += 'M';
+    } else {
+        key += 'm';
     }
-  }
-  else {
-    if (this.options.scaleType === 'melodic') {
-      scaleLength = 15;
+    if (this.options.includeKS) {
+        keySign = new NS.getKeySign(key, this.options.clef);
+    } else {
+        keySign = [];
     }
-    else {
-      scaleLength = 8;
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="' + this.options.includeKS + '">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">\n';
+    stateXML += '<Staff clef="' + this.options.clef + '">\n';
+    stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
+    for (i = 0; i < keySign.length; i++) {
+        noteParts = this.noteNameToParts(keySign[i]);
+        stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
+                noteParts.ltr + '" register="' + noteParts.reg + '" ' +
+                'editable="false" />';
     }
-    for (i = 0; i < scaleLength; i++) {
-      if (i === 0) {
-        stateXML += '<NoteColumn maxNotes="1">';
-        stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
-        stateXML += 'register="' + this.options.givenNote.reg + '" ';
-        stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
-        stateXML += 'noteValue="whole" editable="false" />';
-        stateXML += '</NoteColumn>';
-      }
-      else {
-        stateXML += '<NoteColumn maxNotes="1" />';
-      }
-    }
-  }
-  stateXML += '</NoteColumns>';
+    stateXML += '</KeySign>\n';
 
-  stateXML += '</Staff>\n';
-  stateXML += '</StaffSystem>\n';
-  stateXML += '</MusThGUI>';
+    if (input === '' || input === null || typeof (input) === 'undefined') {
+        resp = null;
+    } else {
+        resp = input.split(',');
+    }
 
-  return stateXML;
+    stateXML += '<NoteColumns>';
+
+    if (resp !== null) {
+
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<NoteColumn maxNotes="1" >';
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                stateXML += 'noteValue="whole" editable="false" />';
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
+        }
+    } else {
+        if (this.options.scaleType === 'melodic') {
+            scaleLength = 15;
+        } else {
+            scaleLength = 8;
+        }
+        for (i = 0; i < scaleLength; i++) {
+            if (i === 0) {
+                stateXML += '<NoteColumn maxNotes="1">';
+                stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
+                stateXML += 'register="' + this.options.givenNote.reg + '" ';
+                stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
+                stateXML += 'noteValue="whole" editable="false" />';
+                stateXML += '</NoteColumn>';
+            } else {
+                stateXML += '<NoteColumn maxNotes="1" />';
+            }
+        }
+    }
+    stateXML += '</NoteColumns>';
+
+    stateXML += '</Staff>\n';
+    stateXML += '</StaffSystem>\n';
+    stateXML += '</MusThGUI>';
+
+    return stateXML;
 
 };
 
@@ -1338,30 +1437,29 @@ NS.XMLConverter.prototype.getScaleIdentifyXML = function(input) {
  * interval writing questions.
  */
 NS.XMLConverter.prototype.getIntervalWriteTextOutput =
-    function(stateXML) {
+        function (stateXML) {
 
-      var parsedXML = Y.XML.parse(stateXML),
-          respString = '',
-          noteXML = parsedXML.getElementsByTagName('Note'),
-          i = 0,
-          acc;
+            var parsedXML = Y.XML.parse(stateXML),
+                    respString = '',
+                    noteXML = parsedXML.getElementsByTagName('Note'),
+                    i = 0,
+                    acc;
 
-      for (i = 0; i < noteXML.length; i++) {
-        if (noteXML[i].getAttribute('editable') === 'true') {
-          acc = noteXML[i].getAttribute('accidental');
-          respString += noteXML[i].getAttribute('letter') + acc +
-              noteXML[i].getAttribute('register') + ',';
-        }
-      }
-      if (respString.length > 0) {
-        respString = respString.substr(0, respString.length - 1);
-      }
-      else {
-        respString = '';
-      }
-      return respString;
+            for (i = 0; i < noteXML.length; i++) {
+                if (noteXML[i].getAttribute('editable') === 'true') {
+                    acc = noteXML[i].getAttribute('accidental');
+                    respString += noteXML[i].getAttribute('letter') + acc +
+                            noteXML[i].getAttribute('register') + ',';
+                }
+            }
+            if (respString.length > 0) {
+                respString = respString.substr(0, respString.length - 1);
+            } else {
+                respString = '';
+            }
+            return respString;
 
-    };
+        };
 
 /**
  * Converts the options and initial input for a interval writing
@@ -1372,50 +1470,49 @@ NS.XMLConverter.prototype.getIntervalWriteTextOutput =
  * as a Moodle interval writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getIntervalWriteXML = function(input) {
+NS.XMLConverter.prototype.getIntervalWriteXML = function (input) {
 
-  var stateXML,
-      inputParts;
+    var stateXML,
+            inputParts;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">';
-  stateXML += '<Staff clef="' + this.options.clef + '">';
-  stateXML += '<KeySign totalAccColumns="0" >';
-  stateXML += '</KeySign>';
-  stateXML += '<NoteColumns>';
-  stateXML += '<NoteColumn maxNotes="2" >';
-  stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
-  stateXML += 'register="' + this.options.givenNote.reg + '" ';
-  stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
-  stateXML += 'noteValue="whole" editable="false" />';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">';
+    stateXML += '<Staff clef="' + this.options.clef + '">';
+    stateXML += '<KeySign totalAccColumns="0" >';
+    stateXML += '</KeySign>';
+    stateXML += '<NoteColumns>';
+    stateXML += '<NoteColumn maxNotes="2" >';
+    stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
+    stateXML += 'register="' + this.options.givenNote.reg + '" ';
+    stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
+    stateXML += 'noteValue="whole" editable="false" />';
 
-  if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-    inputParts = this.noteNameToParts(input);
-    stateXML += '<Note letter="' + inputParts.ltr + '" ';
-    stateXML += 'register="' + inputParts.reg + '" ';
-    stateXML += 'accidental="' + inputParts.acc + '" ';
-    stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
-  }
+    if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+        inputParts = this.noteNameToParts(input);
+        stateXML += '<Note letter="' + inputParts.ltr + '" ';
+        stateXML += 'register="' + inputParts.reg + '" ';
+        stateXML += 'accidental="' + inputParts.acc + '" ';
+        stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
+    }
 
-  stateXML += '</NoteColumn>';
-  stateXML += '</NoteColumns>';
+    stateXML += '</NoteColumn>';
+    stateXML += '</NoteColumns>';
 
+    stateXML += '</Staff>';
+    stateXML += '</StaffSystem>';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
 
-  stateXML += '</Staff>';
-  stateXML += '</StaffSystem>';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="n"/>';
-  stateXML += '            <Button symbol="#"/>';
-  stateXML += '            <Button symbol="b"/>';
-  stateXML += '            <Button symbol="x"/>';
-  stateXML += '            <Button symbol="bb"/>';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
-
-  return stateXML;
+    return stateXML;
 
 };
 
@@ -1428,50 +1525,49 @@ NS.XMLConverter.prototype.getIntervalWriteXML = function(input) {
  * as a Moodle interval identification response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getIntervalIdentifyXML = function(input) {
+NS.XMLConverter.prototype.getIntervalIdentifyXML = function (input) {
 
-  var stateXML,
-      inputParts;
+    var stateXML,
+            inputParts;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">';
-  stateXML += '<Staff clef="' + this.options.clef + '">';
-  stateXML += '<KeySign totalAccColumns="0" >';
-  stateXML += '</KeySign>';
-  stateXML += '<NoteColumns>';
-  stateXML += '<NoteColumn maxNotes="2" >';
-  stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
-  stateXML += 'register="' + this.options.givenNote.reg + '" ';
-  stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
-  stateXML += 'noteValue="whole" editable="false" />';
-
-  if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-    inputParts = this.noteNameToParts(input);
-    stateXML += '<Note letter="' + inputParts.ltr + '" ';
-    stateXML += 'register="' + inputParts.reg + '" ';
-    stateXML += 'accidental="' + inputParts.acc + '" ';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">';
+    stateXML += '<Staff clef="' + this.options.clef + '">';
+    stateXML += '<KeySign totalAccColumns="0" >';
+    stateXML += '</KeySign>';
+    stateXML += '<NoteColumns>';
+    stateXML += '<NoteColumn maxNotes="2" >';
+    stateXML += '<Note letter="' + this.options.givenNote.ltr + '" ';
+    stateXML += 'register="' + this.options.givenNote.reg + '" ';
+    stateXML += 'accidental="' + this.options.givenNote.acc + '" ';
     stateXML += 'noteValue="whole" editable="false" />';
-  }
 
-  stateXML += '</NoteColumn>';
-  stateXML += '</NoteColumns>';
+    if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+        inputParts = this.noteNameToParts(input);
+        stateXML += '<Note letter="' + inputParts.ltr + '" ';
+        stateXML += 'register="' + inputParts.reg + '" ';
+        stateXML += 'accidental="' + inputParts.acc + '" ';
+        stateXML += 'noteValue="whole" editable="false" />';
+    }
 
+    stateXML += '</NoteColumn>';
+    stateXML += '</NoteColumns>';
 
-  stateXML += '</Staff>';
-  stateXML += '</StaffSystem>';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="n"/>';
-  stateXML += '            <Button symbol="#"/>';
-  stateXML += '            <Button symbol="b"/>';
-  stateXML += '            <Button symbol="x"/>';
-  stateXML += '            <Button symbol="bb"/>';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
+    stateXML += '</Staff>';
+    stateXML += '</StaffSystem>';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
 
-  return stateXML;
+    return stateXML;
 
 };
 
@@ -1484,53 +1580,52 @@ NS.XMLConverter.prototype.getIntervalIdentifyXML = function(input) {
  * as a Moodle harmonic function writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getChordQualityWriteXML = function(input) {
+NS.XMLConverter.prototype.getChordQualityWriteXML = function (input) {
 
-  var noteParts,
-      i,
-      stateXML,
-      resp;
+    var noteParts,
+            i,
+            stateXML,
+            resp;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">';
-  stateXML += '<Staff clef="' + this.options.clef + '">';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">';
+    stateXML += '<Staff clef="' + this.options.clef + '">';
 
-  stateXML += '<KeySign totalAccColumns="0"></KeySign>\n';
-  stateXML += '<NoteColumns>';
-  stateXML += '<NoteColumn maxNotes="' + this.options.maxNotes + '" >';
+    stateXML += '<KeySign totalAccColumns="0"></KeySign>\n';
+    stateXML += '<NoteColumns>';
+    stateXML += '<NoteColumn maxNotes="' + this.options.maxNotes + '" >';
 
-  if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-    resp = input.split(',');
-    for (i = 0; i < resp.length; i++) {
-      if (resp[i] !== '') {
-        noteParts = this.noteNameToParts(resp[i]);
-        stateXML += '<Note letter="' + noteParts.ltr + '" ';
-        stateXML += 'register="' + noteParts.reg + '" ';
-        stateXML += 'accidental="' + noteParts.acc + '" ';
-        stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
-      }
+    if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+        resp = input.split(',');
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
+            }
+        }
     }
-  }
 
-  stateXML += '</NoteColumn>';
-  stateXML += '</NoteColumns>';
+    stateXML += '</NoteColumn>';
+    stateXML += '</NoteColumns>';
 
+    stateXML += '</Staff>';
+    stateXML += '</StaffSystem>';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
 
-  stateXML += '</Staff>';
-  stateXML += '</StaffSystem>';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="n"/>';
-  stateXML += '            <Button symbol="#"/>';
-  stateXML += '            <Button symbol="b"/>';
-  stateXML += '            <Button symbol="x"/>';
-  stateXML += '            <Button symbol="bb"/>';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
-
-  return stateXML;
+    return stateXML;
 
 };
 
@@ -1544,34 +1639,34 @@ NS.XMLConverter.prototype.getChordQualityWriteXML = function(input) {
  * harmonic function writing questions.
  */
 NS.XMLConverter.prototype.getHarmonicfunctionWriteTextOutput =
-    function(stateXML) {
+        function (stateXML) {
 
-      var parsedXML = Y.XML.parse(stateXML),
-          respString = '',
-          noteColXML = parsedXML.getElementsByTagName('NoteColumn'),
-          i = 0,
-          j = 0,
-          noteXML,
-          notesXML,
-          acc;
+            var parsedXML = Y.XML.parse(stateXML),
+                    respString = '',
+                    noteColXML = parsedXML.getElementsByTagName('NoteColumn'),
+                    i = 0,
+                    j = 0,
+                    noteXML,
+                    notesXML,
+                    acc;
 
-      for (i = 0; i < noteColXML.length; i++) {
-        notesXML = noteColXML[i].getElementsByTagName('Note');
-        for (j = notesXML.length - 1; j >= 0; j--) {
-          noteXML = notesXML[j];
-          if (typeof(noteXML) !== 'undefined' && noteXML !== null) {
-            acc = noteXML.getAttribute('accidental');
-            respString += noteXML.getAttribute('letter') + acc +
-                noteXML.getAttribute('register');
-          }
-          respString += ',';
-        }
-      }
+            for (i = 0; i < noteColXML.length; i++) {
+                notesXML = noteColXML[i].getElementsByTagName('Note');
+                for (j = notesXML.length - 1; j >= 0; j--) {
+                    noteXML = notesXML[j];
+                    if (typeof (noteXML) !== 'undefined' && noteXML !== null) {
+                        acc = noteXML.getAttribute('accidental');
+                        respString += noteXML.getAttribute('letter') + acc +
+                                noteXML.getAttribute('register');
+                    }
+                    respString += ',';
+                }
+            }
 
-      respString = respString.substr(0, respString.length - 1);
-      return respString;
+            respString = respString.substr(0, respString.length - 1);
+            return respString;
 
-    };
+        };
 
 /**
  * Converts the options and initial input for a harmonic function writing
@@ -1582,67 +1677,64 @@ NS.XMLConverter.prototype.getHarmonicfunctionWriteTextOutput =
  * as a Moodle harmonic function writing response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getHarmonicFunctionWriteXML = function(input) {
+NS.XMLConverter.prototype.getHarmonicFunctionWriteXML = function (input) {
 
-  var keySign,
-      noteParts,
-      i,
-      stateXML,
-      resp;
+    var keySign,
+            noteParts,
+            i,
+            stateXML,
+            resp;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">';
-  stateXML += '<Staff clef="' + this.options.clef + '">';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">';
+    stateXML += '<Staff clef="' + this.options.clef + '">';
 
-  if (this.options.includeKS) {
-    keySign = new NS.getKeySign(this.options.key, this.options.clef);
-  }
-  else {
-    keySign = [];
-  }
-  stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
-  for (i = 0; i < keySign.length; i++) {
-    noteParts = this.noteNameToParts(keySign[i]);
-    stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
-        noteParts.ltr + '" register="' + noteParts.reg + '" ' +
-        'editable="false" />';
-  }
-  stateXML += '</KeySign>\n';
-  stateXML += '<NoteColumns>';
-  stateXML += '<NoteColumn maxNotes="' + this.options.maxNotes + '" >';
-
-  if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-    resp = input.split(',');
-    for (i = 0; i < resp.length; i++) {
-      if (resp[i] !== '') {
-        noteParts = this.noteNameToParts(resp[i]);
-        stateXML += '<Note letter="' + noteParts.ltr + '" ';
-        stateXML += 'register="' + noteParts.reg + '" ';
-        stateXML += 'accidental="' + noteParts.acc + '" ';
-        stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
-      }
+    if (this.options.includeKS) {
+        keySign = new NS.getKeySign(this.options.key, this.options.clef);
+    } else {
+        keySign = [];
     }
-  }
+    stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
+    for (i = 0; i < keySign.length; i++) {
+        noteParts = this.noteNameToParts(keySign[i]);
+        stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
+                noteParts.ltr + '" register="' + noteParts.reg + '" ' +
+                'editable="false" />';
+    }
+    stateXML += '</KeySign>\n';
+    stateXML += '<NoteColumns>';
+    stateXML += '<NoteColumn maxNotes="' + this.options.maxNotes + '" >';
 
-  stateXML += '</NoteColumn>';
-  stateXML += '</NoteColumns>';
+    if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+        resp = input.split(',');
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                stateXML += 'noteValue="whole" editable="' + this.setNotesEditable + '" />';
+            }
+        }
+    }
 
+    stateXML += '</NoteColumn>';
+    stateXML += '</NoteColumns>';
+    stateXML += '</Staff>';
+    stateXML += '</StaffSystem>';
+    stateXML += '    <Toolbars>\n';
+    stateXML += '        <AccidentalToolbar>\n';
+    stateXML += '            <Button symbol="n"/>';
+    stateXML += '            <Button symbol="#"/>';
+    stateXML += '            <Button symbol="b"/>';
+    stateXML += '            <Button symbol="x"/>';
+    stateXML += '            <Button symbol="bb"/>';
+    stateXML += '        </AccidentalToolbar>\n';
+    stateXML += '    </Toolbars>\n';
+    stateXML += '</MusThGUI>';
 
-  stateXML += '</Staff>';
-  stateXML += '</StaffSystem>';
-  stateXML += '    <Toolbars>\n';
-  stateXML += '        <AccidentalToolbar>\n';
-  stateXML += '            <Button symbol="n"/>';
-  stateXML += '            <Button symbol="#"/>';
-  stateXML += '            <Button symbol="b"/>';
-  stateXML += '            <Button symbol="x"/>';
-  stateXML += '            <Button symbol="bb"/>';
-  stateXML += '        </AccidentalToolbar>\n';
-  stateXML += '    </Toolbars>\n';
-  stateXML += '</MusThGUI>';
-
-  return stateXML;
+    return stateXML;
 
 };
 
@@ -1655,58 +1747,56 @@ NS.XMLConverter.prototype.getHarmonicFunctionWriteXML = function(input) {
  * as a Moodle harmonic function identification response.
  * @return {String} A MusThGUI compatible XML string.
  */
-NS.XMLConverter.prototype.getHarmonicFunctionIdentifyXML = function(input) {
+NS.XMLConverter.prototype.getHarmonicFunctionIdentifyXML = function (input) {
 
-  var keySign,
-      noteParts,
-      i,
-      stateXML,
-      resp;
+    var keySign,
+            noteParts,
+            i,
+            stateXML,
+            resp;
 
-  stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
-      '" accidentalCarryOver="true">\n';
-  stateXML += '<StaffSystem maxLedgerLines="4">';
-  stateXML += '<Staff clef="' + this.options.clef + '">';
+    stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
+            '" accidentalCarryOver="true">\n';
+    stateXML += '<StaffSystem maxLedgerLines="4">';
+    stateXML += '<Staff clef="' + this.options.clef + '">';
 
-  if (this.options.includeKS) {
-    keySign = new NS.getKeySign(this.options.key, this.options.clef);
-  }
-  else {
-    keySign = [];
-  }
-  stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
-  for (i = 0; i < keySign.length; i++) {
-    noteParts = this.noteNameToParts(keySign[i]);
-    stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
-        noteParts.ltr + '" register="' + noteParts.reg + '" ' +
-        'editable="false" />';
-  }
-  stateXML += '</KeySign>\n';
-  stateXML += '<NoteColumns>';
-  if (input !== '' && input !== null && typeof(input) !== 'undefined') {
-    resp = input.split(',');
-    stateXML += '<NoteColumn maxNotes="' + resp.length + '" >';
-    for (i = 0; i < resp.length; i++) {
-      if (resp[i] !== '') {
-        noteParts = this.noteNameToParts(resp[i]);
-        stateXML += '<Note letter="' + noteParts.ltr + '" ';
-        stateXML += 'register="' + noteParts.reg + '" ';
-        stateXML += 'accidental="' + noteParts.acc + '" ';
-        stateXML += 'noteValue="whole" editable="false" />';
-      }
+    if (this.options.includeKS) {
+        keySign = new NS.getKeySign(this.options.key, this.options.clef);
+    } else {
+        keySign = [];
     }
-    stateXML += '</NoteColumn>';
-  }
-  else {
-    stateXML += '<NoteColumn maxNotes="0" />';
-  }
-  stateXML += '</NoteColumns>';
+    stateXML += '<KeySign totalAccColumns="' + keySign.length + '">\n';
+    for (i = 0; i < keySign.length; i++) {
+        noteParts = this.noteNameToParts(keySign[i]);
+        stateXML += '<Accidental type="' + noteParts.acc + '" letter="' +
+                noteParts.ltr + '" register="' + noteParts.reg + '" ' +
+                'editable="false" />';
+    }
+    stateXML += '</KeySign>\n';
+    stateXML += '<NoteColumns>';
+    if (input !== '' && input !== null && typeof (input) !== 'undefined') {
+        resp = input.split(',');
+        stateXML += '<NoteColumn maxNotes="' + resp.length + '" >';
+        for (i = 0; i < resp.length; i++) {
+            if (resp[i] !== '') {
+                noteParts = this.noteNameToParts(resp[i]);
+                stateXML += '<Note letter="' + noteParts.ltr + '" ';
+                stateXML += 'register="' + noteParts.reg + '" ';
+                stateXML += 'accidental="' + noteParts.acc + '" ';
+                stateXML += 'noteValue="whole" editable="false" />';
+            }
+        }
+        stateXML += '</NoteColumn>';
+    } else {
+        stateXML += '<NoteColumn maxNotes="0" />';
+    }
+    stateXML += '</NoteColumns>';
 
-  stateXML += '</Staff>';
-  stateXML += '</StaffSystem>';
-  stateXML += '</MusThGUI>';
+    stateXML += '</Staff>';
+    stateXML += '</StaffSystem>';
+    stateXML += '</MusThGUI>';
 
-  return stateXML;
+    return stateXML;
 
 };
 
@@ -1719,26 +1809,24 @@ NS.XMLConverter.prototype.getHarmonicFunctionIdentifyXML = function(input) {
  * @return {Object literal} An object literal with 3 string properties: ltr, acc
  * and reg.
  */
-NS.XMLConverter.prototype.noteNameToParts = function(noteName) {
-  var parts = [],
-      clefSeparator;
-  if (noteName.search('-') < 0) {
-    clefSeparator = noteName.length;
-  }
-  else {
-    clefSeparator = noteName.search('-');
-  }
-  parts.ltr = noteName.substr(0, 1);
-  parts.acc = noteName.substr(1, clefSeparator - 2);
-  parts.reg = noteName.substr(clefSeparator - 1, 1);
-  if (noteName.search('-') >= 0) {
-    parts.clef = noteName.substr(clefSeparator + 1);
-  }
-  else {
-    parts.clef = '';
-  }
+NS.XMLConverter.prototype.noteNameToParts = function (noteName) {
+    var parts = [],
+            clefSeparator;
+    if (noteName.search('-') < 0) {
+        clefSeparator = noteName.length;
+    } else {
+        clefSeparator = noteName.search('-');
+    }
+    parts.ltr = noteName.substr(0, 1);
+    parts.acc = noteName.substr(1, clefSeparator - 2);
+    parts.reg = noteName.substr(clefSeparator - 1, 1);
+    if (noteName.search('-') >= 0) {
+        parts.clef = noteName.substr(clefSeparator + 1);
+    } else {
+        parts.clef = '';
+    }
 
-  return parts;
+    return parts;
 };
 
 }, '@VERSION@', {"requires": ["base", "node", "datatype", "node-event-simulate"]});
