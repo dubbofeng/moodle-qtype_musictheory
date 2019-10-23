@@ -50,38 +50,24 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
     }
 
     public function get_correct_response() {
-
-        $ltr = $this->musictheory_givennote1letter;
-        $acc = $this->musictheory_givennote1accidental;
-        $reg = $this->musictheory_givennote1register;
-        $tonic = new Note($ltr, $acc, $reg);
-        $scale = null;
-        switch ($this->musictheory_scaletype) {
-            case 'natural':
-                $scale = new NaturalMinorScale($tonic);
-                break;
-            case 'harmonic':
-                $scale = new HarmonicMinorScale($tonic);
-                break;
-            case 'melodic':
-                $scale = new MelodicMinorScale($tonic);
-                break;
-            default:
-                $scale = new MajorScale($tonic);
+        $notes = array();
+        if($this->musictheory_numberofnotes > 0){
+            for ($i=1; $i <= $this->musictheory_numberofnotes; $i++) { 
+                $ltr = $this->{'musictheory_givennote'.$i.'letter'};
+                $acc = $this->{'musictheory_givennote'.$i.'accidental'};
+                $reg = $this->{'musictheory_givennote'.$i.'register'};
+                $note = new Note($ltr, $acc, $reg);
+                $notes[] = (string) $note;
+            }
         }
-
-        return array('answer' => (string) $scale);
+        return array('answer' => join(",",$notes));
     }
 
     public function is_complete_response(array $response) {
         if (!isset($response['answer'])) {
             return false;
         }
-        if ($this->musictheory_scaletype == 'melodic') {
-            $regex = '/^([A-G](n|\#|b|x|bb)[1-6],){14}([A-G](n|\#|b|x|bb)[1-6]){1}$/';
-        } else {
-            $regex = '/^([A-G](n|\#|b|x|bb)[1-6],){7}([A-G](n|\#|b|x|bb)[1-6]){1}$/';
-        }
+        $regex = '/^([A-G](n|\#|b|x|bb)[1-6],){'.($this->musictheory_numberofnotes-1).'}([A-G](n|\#|b|x|bb)[1-6]){1}$/';
         return preg_match($regex, $response['answer']);
     }
 
@@ -99,23 +85,14 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
     }
 
     public function get_validation_error(array $response) {
-        if ($this->musictheory_scaletype == 'melodic') {
-            $incompleteregex = '/^(([A-G](n|\#|b|x|bb)[1-6])?,?){0,15}$/';
-            $incompleteregex2 = '/^(([A-G](n|\#|b|x|bb)[1-6]),){0,13}([A-G](n|\#|b|x|bb)[1-6]){1}$/';
-        } else {
-            $incompleteregex = '/^(([A-G](n|\#|b|x|bb)[1-6])?,?){0,8}$/';
-            $incompleteregex2 = '/^(([A-G](n|\#|b|x|bb)[1-6]),){0,6}([A-G](n|\#|b|x|bb)[1-6]){1}$/';
-        }
 
+        $incompleteregex = '/^([A-G](n|\#|b|x|bb)[1-6],){'.($this->musictheory_numberofnotes-1).'}([A-G](n|\#|b|x|bb)[1-6]){1}$/';
         if (empty($response['answer'])) {
             return get_string('validationerror_empty', 'qtype_musictheory');
         } else if (preg_match('/\s/', $response['answer'])) {
             return get_string('validationerror_whitespace', 'qtype_musictheory');
-        } else if (preg_match($incompleteregex, $response['answer']) ||
-                preg_match($incompleteregex2, $response['answer'])) {
-            $stringkey = ($this->musictheory_scaletype == 'melodic') ?
-                    'validationerror_scale_incomplete_melodic' :
-                    'validationerror_scale_incomplete';
+        } else if (preg_match($incompleteregex, $response['answer'])) {
+            $stringkey = 'validationerror_melodic_dictation_incomplete';
             return get_string($stringkey, 'qtype_musictheory');
         }
         global $OUTPUT;
@@ -124,27 +101,9 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
     }
 
     public function get_question_text() {
-        if ($this->musictheory_scaletype == 'melodic') {
-            $qtext = get_string('questiontext_melodic_dictation_melodic', 'qtype_musictheory');
-        } else {
-            $qtext = get_string('questiontext_melodic_dictation', 'qtype_musictheory');
-        }
-        switch ($this->musictheory_givennote1accidental) {
-            case 'n':
-                $acc = '';
-                break;
-            case 'b':
-            case 'x':
-            case 'bb':
-                $acc = get_string('acc_' . $this->musictheory_givennote1accidental, 'qtype_musictheory');
-                break;
-            case '#':
-                $acc = get_string('acc_sharp', 'qtype_musictheory');
-                break;
-        }
+        $qtext = get_string('questiontext_melodic_dictation', 'qtype_musictheory');
         return $qtext. '</b>';
     }
-
 }
 
 /**

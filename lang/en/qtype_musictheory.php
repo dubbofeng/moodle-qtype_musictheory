@@ -451,6 +451,7 @@ $string['validationerror_scale_incomplete_melodic'] = 'Incomplete answer. A tota
  required, including the given tonic.';
 $string['validationerror_scale_identify'] = 'Incomplete answer. All dropdown menus must be selected.';
 $string['validationerror_whitespace'] = 'Invalid answer syntax: remove all spaces from your answer.';
+$string['validationerror_melodic_dictation_incomplete'] = 'Number of notes incorrect.';
 
 // Privacy.
 $string['privacy:metadata'] = 'The Music Theory question type plugin does not store any personal data.';

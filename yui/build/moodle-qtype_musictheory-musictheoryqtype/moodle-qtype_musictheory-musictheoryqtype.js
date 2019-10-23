@@ -642,6 +642,8 @@ NS.XMLConverter.prototype.getCanvasTextOutput =
                 case 'chordquality-write':
                 case 'harmonicfunction-write':
                     return this.getHarmonicfunctionWriteTextOutput(stateXML);
+                case 'melodic-dictation':
+                    return this.getMelodicDictationTextOutput(stateXML);
                 default:
                     return '';
             }
@@ -1118,7 +1120,6 @@ NS.XMLConverter.prototype.getScaleWriteTextOutput =
             }
             respString = respString.substr(0, respString.length - 1);
             return respString;
-
         };
 
 /**
@@ -1229,6 +1230,42 @@ NS.XMLConverter.prototype.getScaleWriteXML = function (input) {
     return stateXML;
 
 };
+
+/**
+ * Converts the MusThGUI's state from a XML to a simpler string describing
+ * the state in a format suited for scale writing questions.
+ *
+ * @method getMelodicDictationTextOutput
+ * @param {String} stateXML The MusThGUI canvas' state, as XML
+ * @return {String} A string describing the state in a format compatible for
+ * scale writing questions.
+ */
+NS.XMLConverter.prototype.getMelodicDictationTextOutput =
+        function (stateXML) {
+
+            var parsedXML = Y.XML.parse(stateXML),
+                    respString = '',
+                    noteColXML = parsedXML.getElementsByTagName('NoteColumn'),
+                    i = 0,
+                    noteXML,
+                    acc;
+
+            for (i = 0; i < noteColXML.length; i++) {
+                noteXML = noteColXML[i].getElementsByTagName('Note')[0];
+                if (typeof (noteXML) !== 'undefined' && noteXML !== null) {
+                    acc = noteXML.getAttribute('accidental');
+                    respString += noteXML.getAttribute('letter') + acc +
+                            noteXML.getAttribute('register');
+                }
+                respString += ',';
+            }
+            for (i; i < noteColXML.length; i++) {
+                respString += ',';
+            }
+            respString = respString.substr(0, respString.length - 1);
+            console.log(respString);
+            return respString;
+        };
 
 /**
  * Converts the options and initial input for a scale writing
