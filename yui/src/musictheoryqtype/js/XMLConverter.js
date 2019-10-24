@@ -315,6 +315,7 @@ NS.XMLConverter.prototype.getNoteWriteXML = function (input) {
         stateXML += '    </Toolbars>\n';
     }
     stateXML += '</MusThGUI>';
+    
     return stateXML;
 };
 
@@ -637,6 +638,7 @@ NS.XMLConverter.prototype.getScaleWriteTextOutput =
             }
             respString = respString.substr(0, respString.length - 1);
             return respString;
+
         };
 
 /**
@@ -910,6 +912,7 @@ NS.XMLConverter.prototype.getScaleIdentifyXML = function (input) {
     } else {
         keySign = [];
     }
+
     stateXML = '<MusThGUI canvasEditable="' + this.options.editable +
             '" accidentalCarryOver="' + this.options.includeKS + '">\n';
     stateXML += '<StaffSystem maxLedgerLines="4">\n';

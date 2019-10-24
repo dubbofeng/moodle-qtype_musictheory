@@ -347,6 +347,7 @@ NS.initEditForm = function () {
  * @return {Undefined}
  */
 NS.editForm.setFormOptionListeners = function () {
+
     Y.all(
         '#id_musictheory_musicqtype').on('change', function () {
             var typeBtnNode = Y.one('#' + 'id_musictheory_updatemusicqtype');
@@ -355,6 +356,7 @@ NS.editForm.setFormOptionListeners = function () {
             }
         }
     );
+    
     Y.all(
         '#id_musictheory_numberofnotes').on('change', function () {
             var typeBtnNode = Y.one('#' + 'id_updatebutton');

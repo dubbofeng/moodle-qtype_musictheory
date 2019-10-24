@@ -585,6 +585,7 @@ class qtype_musictheory extends question_type {
 
         $outxml .= '</' . $musicqtype . '>';
         $outxml .= '</options>';
+        
         return $outxml;
     }
 
