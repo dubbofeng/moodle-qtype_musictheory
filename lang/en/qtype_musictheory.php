@@ -48,7 +48,6 @@ $string['includealterations_help'] = 'Indicates whether accidentals are to be
 $string['includestaticnote'] = 'Include given note';
 $string['displaykeysignature'] = 'Display key signature';
 $string['showfirstnote'] = 'Show the first note';
-$string['allowenharmonicnotes'] = 'Allow enharmonic notes';
 $string['numberofnotes'] = 'Number of notes';
 $string['direction'] = 'Direction';
 $string['givennoteelementgroup'] = 'Given note';
@@ -137,6 +136,9 @@ $string['qtype_musictheory_strategy_harmonicfunctionid_allornothing'] = 'All or 
 $string['qtype_musictheory_strategy_note_allornothing'] = 'All or nothing';
 $string['qtype_musictheory_strategy_keyboard_allornothing'] = 'All or nothing';
 $string['qtype_musictheory_strategy_scale_creditbynote'] = 'Partial credit for each correct note';
+$string['qtype_musictheory_strategy_dictation_creditbynote'] = 'Partial credit for each correct note';
+$string['qtype_musictheory_strategy_all_or_nothing_allow_enharmonic'] = 'All or nothing, allow enharmonic notes';
+$string['qtype_musictheory_strategy_dictation_creditbynote_allow_enharmonic'] = 'Partial credit for each correct note, allow enharmonic notes';
 
 // Note names.
 $string['notec'] = 'C';

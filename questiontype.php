@@ -278,8 +278,6 @@ class qtype_musictheory extends question_type {
                     $question->{"musictheory_givennote".$i."accidental"} = (string) $options->tonic[$i-1]->accidental;
                     $question->{"musictheory_givennote".$i."register"} = (string) $options->tonic[$i-1]->register;
                 }
-                $allowenharmonicnotes = (((string) $options->allowenharmonicnotes) == 'true') ? 1 : 0;
-                $question->musictheory_allowenharmonicnotes = $allowenharmonicnotes;
                 $showfirstnote = (((string) $options->showfirstnote) == 'true') ? 1 : 0;
                 $question->musictheory_showfirstnote = $showfirstnote;
                 $question->musictheory_numberofnotes = (string) $options->numberofnotes;
@@ -583,8 +581,6 @@ class qtype_musictheory extends question_type {
                 $outxml .= '<numberofnotes>' . $question->musictheory_numberofnotes . '</numberofnotes>';
                 $showfirstnote = ($question->musictheory_showfirstnote == 1) ? 'true' : 'false';
                 $outxml .= '<showfirstnote>' . $showfirstnote . '</showfirstnote>';
-                $allowenharmonicnotes = ($question->musictheory_allowenharmonicnotes == 1) ? 'true' : 'false';
-                $outxml .= '<allowenharmonicnotes>' . $allowenharmonicnotes . '</allowenharmonicnotes>';
                 break;
         }
 

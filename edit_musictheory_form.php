@@ -392,7 +392,6 @@ class qtype_musictheory_edit_form extends question_edit_form {
      */
     private function add_melodic_dictation_options($mform) {
         $this->add_showfirstnote_option($mform);
-        $this->add_allowenharmonicnotes_option($mform);
         $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
         $this->add_numberofnotes_option($mform);
         if(isset($_REQUEST['musictheory_numberofnotes'])){

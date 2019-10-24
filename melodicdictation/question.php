@@ -36,7 +36,9 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
     public function get_supported_grading_strategies() {
         return array(
             'qtype_musictheory_strategy_all_or_nothing',
-            'qtype_musictheory_strategy_scale_creditbynote'
+            'qtype_musictheory_strategy_all_or_nothing_allow_enharmonic',
+            'qtype_musictheory_strategy_scale_creditbynote',
+            'qtype_musictheory_strategy_dictation_creditbynote_allow_enharmonic'
         );
     }
 
@@ -113,23 +115,50 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
  * @copyright  2013 Eric Brisson
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_musictheory_strategy_dictation_creditbynote implements qtype_musictheory_grading_strategy {
+class qtype_musictheory_strategy_dictation_creditbynote_allow_enharmonic implements qtype_musictheory_grading_strategy {
 
     public function grade($response, $correctresponse) {
 
         $fraction = 0;
-
         $respnotes = explode(',', $response['answer']);
         $ansnotes = explode(',', $correctresponse['answer']);
-
         $notepartialfraction = 1 / (count($ansnotes) - 1);
-
+        $note = new Note("C","n",4);
         for ($i = 1; $i < count($respnotes); $i++) {
-            if ($respnotes[$i] == $ansnotes[$i]) {
+            $respnote = $note->toNote($respnotes[$i]);
+            $ansnote = $note->toNote($ansnotes[$i]);
+            if ($respnote->id == $ansnote->id) {
                 $fraction += $notepartialfraction;
             }
         }
 
+        return array($fraction, question_state::graded_state_for_fraction($fraction));
+    }
+
+}
+
+/**
+ * A grading strategy that simply checks whether a given response is identical to
+ * the correct response. If so, full grade is given to the response - otherwise, a grade
+ * of zero is assigned.
+ *
+ * @copyright  2013 Eric Brisson
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class qtype_musictheory_strategy_all_or_nothing_allow_enharmonic implements qtype_musictheory_grading_strategy {
+
+    public function grade($response, $correctresponse) {
+        $fraction = 1;
+        $respnotes = explode(',', $response['answer']);
+        $ansnotes = explode(',', $correctresponse['answer']);
+        $note = new Note("C","n",4);
+        for ($i = 1; $i < count($respnotes); $i++) {
+            $respnote = $note->toNote($respnotes[$i]);
+            $ansnote = $note->toNote($ansnotes[$i]);
+            if ($respnote->id != $ansnote->id) {
+                $fraction = 0;
+            }
+        }
         return array($fraction, question_state::graded_state_for_fraction($fraction));
     }
 
