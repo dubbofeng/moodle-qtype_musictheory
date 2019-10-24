@@ -750,12 +750,12 @@ NS.XMLConverter.prototype.getScaleWriteXML = function (input) {
 
 /**
  * Converts the MusThGUI's state from a XML to a simpler string describing
- * the state in a format suited for scale writing questions.
+ * the state in a format suited for melodic dctation questions.
  *
  * @method getMelodicDictationTextOutput
  * @param {String} stateXML The MusThGUI canvas' state, as XML
  * @return {String} A string describing the state in a format compatible for
- * scale writing questions.
+ * melodic dctation questions.
  */
 NS.XMLConverter.prototype.getMelodicDictationTextOutput =
         function (stateXML) {
@@ -785,12 +785,12 @@ NS.XMLConverter.prototype.getMelodicDictationTextOutput =
         };
 
 /**
- * Converts the options and initial input for a scale writing
+ * Converts the options and initial input for a melodic dctation
  * question into an XML string that can be passed to a MusThGUI instance.
  *
  * @method getMelodicDictationXML
  * @param {String} input Provides the initial input as a string, formatted
- * as a Moodle scale writing response.
+ * as a Moodle melodic dctation response.
  * @return {String} A MusThGUI compatible XML string.
  */
 NS.XMLConverter.prototype.getMelodicDictationXML = function (input) {
@@ -801,12 +801,6 @@ NS.XMLConverter.prototype.getMelodicDictationXML = function (input) {
             key = this.options.givenNote.ltr + this.options.givenNote.acc,
             stateXML,
             resp;
-
-    // if (this.options.scaleType === 'major') {
-    //     key += 'M';
-    // } else {
-    //     key += 'm';
-    // }
     key += 'M';
     if (this.options.includeKS) {
         keySign = new NS.getKeySign(key, this.options.clef);

@@ -677,17 +677,6 @@ class qtype_musictheory_edit_form extends question_edit_form {
     }
 
     /**
-     * Adds a checkbox to the form indicating whether enharmonic notes
-     * should be allowed.
-     *
-     * @param object $mform The form being built.
-     */
-    private function add_allowenharmonicnotes_option($mform) {
-        $lbl = get_string('allowenharmonicnotes', 'qtype_musictheory');
-        $mform->addElement('advcheckbox', 'musictheory_allowenharmonicnotes', $lbl);
-    }
-
-    /**
      * Adds a dropdown to the form indicating how many notes
      * should be input.
      *

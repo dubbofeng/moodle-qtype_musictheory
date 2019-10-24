@@ -290,13 +290,17 @@ NS.questionRender.convertOptionsXMLtoObjectLiteral = function (optionsXML,
                     'clef')[0].firstChild.nodeValue;
             options.key = optionsNode.getElementsByTagName(
                     'key')[0].firstChild.nodeValue;
-            options.includeKS =optionsNode.getElementsByTagName('displaykeysignature')[0].firstChild.nodeValue;
+            options.includeKS = optionsNode.getElementsByTagName(
+                    'displaykeysignature')[0].firstChild.nodeValue;
             options.includeKS = (options.includeKS === 'true');
             break;
         case 'harmonicfunction-identify':
-            options.clef = optionsNode.getElementsByTagName('clef')[0].firstChild.nodeValue;
-            options.key = optionsNode.getElementsByTagName('key')[0].firstChild.nodeValue;
-            options.includeKS =optionsNode.getElementsByTagName('displaykeysignature')[0].firstChild.nodeValue;
+            options.clef = optionsNode.getElementsByTagName(
+                    'clef')[0].firstChild.nodeValue;
+            options.key = optionsNode.getElementsByTagName(
+                    'key')[0].firstChild.nodeValue;
+            options.includeKS =optionsNode.getElementsByTagName(
+                    'displaykeysignature')[0].firstChild.nodeValue;
             options.includeKS = (options.includeKS === 'true');
             break;
         case 'melodic-dictation':

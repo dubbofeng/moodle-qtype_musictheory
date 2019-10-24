@@ -20,15 +20,15 @@
  *
  * @package    qtype
  * @subpackage musictheory
- * @copyright  2013 Eric Brisson
+ * @copyright  2019 Dubbo Feng
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * The music theory scale writing question subtype.
+ * The music theory melodic dictation question subtype.
  *
- * @copyright  2013 Eric Brisson
+ * @copyright  2019 Dubbo Feng
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_musictheory_melodic_dictation extends qtype_musictheory_question implements qtype_musictheory_subtype {
@@ -110,9 +110,9 @@ class qtype_musictheory_melodic_dictation extends qtype_musictheory_question imp
 
 /**
  * A grading strategy that divides the grade evenly by the number of scale notes the user has
- * to enter, and awards partial grade for each correct note.
+ * to enter, and awards partial grade for each correct note, allow enharmonic notes.
  *
- * @copyright  2013 Eric Brisson
+ * @copyright  2019 Dubbo Feng
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_musictheory_strategy_dictation_creditbynote_allow_enharmonic implements qtype_musictheory_grading_strategy {
@@ -140,9 +140,9 @@ class qtype_musictheory_strategy_dictation_creditbynote_allow_enharmonic impleme
 /**
  * A grading strategy that simply checks whether a given response is identical to
  * the correct response. If so, full grade is given to the response - otherwise, a grade
- * of zero is assigned.
+ * of zero is assigned, allow enharmonic notes.
  *
- * @copyright  2013 Eric Brisson
+ * @copyright  2019 Dubbo Feng
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class qtype_musictheory_strategy_all_or_nothing_allow_enharmonic implements qtype_musictheory_grading_strategy {

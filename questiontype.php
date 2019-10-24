@@ -136,7 +136,6 @@ class qtype_musictheory extends question_type {
         $question->musictheory_keymode = 'GnM';
         $question->musictheory_displaykeysignature = '0';
         $question->musictheory_showfirstnote = '0';
-        $question->musictheory_allowenharmonicnotes = '0';
         $question->musictheory_considerregister = '0';
         $question->musictheory_includealterations = '0';
         $question->musictheory_direction = 'above';
