@@ -397,7 +397,9 @@ class qtype_musictheory_edit_form extends question_edit_form {
         $this->add_numberofnotes_option($mform);
         if(isset($_REQUEST['musictheory_numberofnotes'])){
             for ($i=1; $i <= $_REQUEST['musictheory_numberofnotes']; $i++) { 
-                $this->add_note_option($mform, 'givennote'.$i, get_string('notelbl', 'qtype_musictheory')." ".($i), true, false);
+                $this->add_note_option($mform, 'givennote'.$i, get_string('notelbl', 'qtype_musictheory')." ".($i), true, true);
+                $mform->setDefault('musictheory_givennote'.$i.'letter', "C");
+                $mform->setDefault('musictheory_givennote'.$i.'register', "4");
             }
         }
     }
