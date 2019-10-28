@@ -122,6 +122,9 @@ class qtype_musictheory extends question_type {
             case 'melodic-dictation':
                 $class = 'qtype_musictheory_melodic_dictation';
                 break;
+            case 'harmonic-dictation':
+                $class = 'qtype_musictheory_harmonic_dictation';
+                break;
         }
 
         $gradingstrategyname = $questiondata->options->musictheory_gradingstrategy;
@@ -271,6 +274,7 @@ class qtype_musictheory extends question_type {
                 $question->musictheory_hfsecondary = (string) $options->harmonicfunction[0]->hfsecondary;
                 break;
             case 'melodic-dictation':
+            case 'harmonic-dictation':
                 $question->musictheory_clef = (string) $options->clef;
                 for ($i=1; $i <= $options->numberofnotes; $i++) { 
                     $question->{"musictheory_givennote".$i."letter"} = (string) $options->tonic[$i-1]->letter;
@@ -282,6 +286,7 @@ class qtype_musictheory extends question_type {
                 $question->musictheory_numberofnotes = (string) $options->numberofnotes;
                 $question->musictheory_scaletype = (string) $options->scaletype;
                 break;
+                
         }
 
         return $question;
@@ -569,6 +574,7 @@ class qtype_musictheory extends question_type {
                 $outxml .= '</harmonicfunction>';
                 break;
             case 'melodic-dictation':
+            case 'harmonic-dictation':
                 $outxml .= '<clef>' . $question->musictheory_clef . '</clef>';
                 for ($i=1; $i <= $question->musictheory_numberofnotes; $i++) { 
                     $outxml .= '<tonic>';

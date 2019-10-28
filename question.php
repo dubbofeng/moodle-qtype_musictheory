@@ -34,6 +34,7 @@ require_once(__DIR__ . '/scale/renderer.php');
 require_once(__DIR__ . '/harmonicfunction/renderer.php');
 require_once(__DIR__ . '/chordquality/renderer.php');
 require_once(__DIR__ . '/melodicdictation/renderer.php');
+require_once(__DIR__ . '/harmonicdictation/renderer.php');
 
 /**
  * Interface that a music theory question subtype must implement.
@@ -123,6 +124,8 @@ abstract class qtype_musictheory_question extends question_graded_automatically 
                 return parent::get_renderer($page);
             case 'melodic-dictation':
                 return new qtype_musictheory_melodic_dictation_renderer($page, null);
+            case 'harmonic-dictation':
+                return new qtype_musictheory_harmonic_dictation_renderer($page, null);
         }
     }
 
@@ -136,6 +139,7 @@ require_once(__DIR__ . '/scale/question.php');
 require_once(__DIR__ . '/chordquality/question.php');
 require_once(__DIR__ . '/harmonicfunction/question.php');
 require_once(__DIR__ . '/melodicdictation/question.php');
+require_once(__DIR__ . '/harmonicdictation/question.php');
 /**
  * This interface defines the methods that a class must implement if it is to
  * be used a strategy to grade a music theory question subtype and provide

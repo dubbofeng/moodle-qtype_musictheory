@@ -103,6 +103,7 @@ $string['qtype_harmonicfunction-write-random'] = 'Harmonic function writing (ran
 $string['qtype_harmonicfunction-identify'] = 'Harmonic function identification';
 $string['qtype_harmonicfunction-identify-random'] = 'Harmonic function identification (random)';
 $string['qtype_melodic-dictation'] = 'Melodic dictation';
+$string['qtype_harmonic-dictation'] = 'Harmonic dictation';
 
 // Edit form - grading strategy options and help.
 $string['musictheory_gradingstrategy'] = 'Grading strategy';
@@ -122,6 +123,15 @@ $string['musictheory_gradingstrategy_scale-write_help'] = '<p>The grading strate
 ';
 $string['musictheory_gradingstrategy_melodic-dictation'] = 'Grading strategy';
 $string['musictheory_gradingstrategy_melodic-dictation_help'] = '<p>The grading strategy specifies how
+ the question will be graded.</p>
+ <p><b>All or nothing</b>: The response is compared to the correct answer. If the response
+ is correct, full marks are given. If the answer is incorrect, a mark of zero is given.</p>
+ <p><b>Partial credit for each correct note</b>:
+ A grading strategy that divides the grade evenly by the number of scale notes the user has
+ to enter, and awards partial grade for each correct note.</p>
+';
+$string['musictheory_gradingstrategy_harmonic-dictation'] = 'Grading strategy';
+$string['musictheory_gradingstrategy_harmonic-dictation_help'] = '<p>The grading strategy specifies how
  the question will be graded.</p>
  <p><b>All or nothing</b>: The response is compared to the correct answer. If the response
  is correct, full marks are given. If the answer is incorrect, a mark of zero is given.</p>
@@ -356,6 +366,7 @@ $string['questiontext_chordquality_identify'] = 'Identify the root and quality o
 $string['questiontext_harmonicfunction_write'] = 'Enter the following harmonic function';
 $string['questiontext_harmonicfunction_identify'] = 'Identify the following harmonic function';
 $string['questiontext_melodic_dictation'] = 'Melodic dictation';
+$string['questiontext_harmonic_dictation'] = 'Harmonic dictation';
 
 $string['acc_n'] = '&#9838;';
 $string['acc_sharp'] = '&#9839;';
@@ -419,14 +430,24 @@ $string['scale_write_questionasui'] = 'Scale answer entry';
 $string['scale_write_questionasui_help'] = '<p>Enter notes by clicking on the staff, after selecting
  the type of accidental in the right-hand toolbar. To delete a note, click on it again.</p>
  <p>Note that accidentals carry over to subsequent notes.</p>';
- $string['melodic_dictation_questionastext'] = 'Scale answer entry';
+$string['melodic_dictation_questionastext'] = 'Melodic dictation answer entry';
 $string['melodic_dictation_questionastext_help'] = '<p>Enter a comma-separated list of notes, including
  the specified tonic, without spaces, using the following syntax:</p><p>[Uppercase letter name]
  [Accidental ("n" = natural, "#" = sharp, "b" = flat, "x" = double-sharp, "bb" = double-flat)]
  [Register (a digit between 2 and 6, following the scientific pitch notation)], ... </p>
  <p>Random example: <b>Tonic = An4 answer=>An4,Bb4,C#5,D#5,E#5,F#5,G#5,An5</b></p>';
-$string['melodic_dictation_questionasui'] = 'Scale answer entry';
+$string['melodic_dictation_questionasui'] = 'Melodic dictation answer entry';
 $string['melodic_dictation_questionasui_help'] = '<p>Enter notes by clicking on the staff, after selecting
+ the type of accidental in the right-hand toolbar. To delete a note, click on it again.</p>
+ <p>Note that accidentals carry over to subsequent notes.</p>';
+ $string['harmonic_dictation_questionastext'] = 'Harmonic dictation answer entry';
+$string['harmonic_dictation_questionastext_help'] = '<p>Enter a comma-separated list of notes, including
+ the specified tonic, without spaces, using the following syntax:</p><p>[Uppercase letter name]
+ [Accidental ("n" = natural, "#" = sharp, "b" = flat, "x" = double-sharp, "bb" = double-flat)]
+ [Register (a digit between 2 and 6, following the scientific pitch notation)], ... </p>
+ <p>Random example: <b>Tonic = An4 answer=>An4,Bb4,C#5,D#5,E#5,F#5,G#5,An5</b></p>';
+$string['harmonic_dictation_questionasui'] = 'Harmonic dictation answer entry';
+$string['harmonic_dictation_questionasui_help'] = '<p>Enter notes by clicking on the staff, after selecting
  the type of accidental in the right-hand toolbar. To delete a note, click on it again.</p>
  <p>Note that accidentals carry over to subsequent notes.</p>';
 $string['emptykeysignature'] = 'Empty key signature';
@@ -454,6 +475,7 @@ $string['validationerror_scale_incomplete_melodic'] = 'Incomplete answer. A tota
 $string['validationerror_scale_identify'] = 'Incomplete answer. All dropdown menus must be selected.';
 $string['validationerror_whitespace'] = 'Invalid answer syntax: remove all spaces from your answer.';
 $string['validationerror_melodic_dictation_incomplete'] = 'Number of notes incorrect.';
+$string['validationerror_harmonic_dictation_incomplete'] = 'Number of notes incorrect.';
 
 // Privacy.
 $string['privacy:metadata'] = 'The Music Theory question type plugin does not store any personal data.';

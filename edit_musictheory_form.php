@@ -79,7 +79,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
                 'harmonicfunction-identify'        => get_string('qtype_harmonicfunction-identify', 'qtype_musictheory'),
                 'harmonicfunction-identify-random' => get_string('qtype_harmonicfunction-identify-random', 'qtype_musictheory'),
                 'melodic-dictation'                => get_string('qtype_melodic-dictation', 'qtype_musictheory'),
-                
+                'harmonic-dictation'                => get_string('qtype_harmonic-dictation', 'qtype_musictheory'),
             );
 
             $musicqtypeselect = $mform->createElement('select', 'musictheory_musicqtype', '', $selectoptionsqtype);
@@ -212,6 +212,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
                 $this->add_harmonicfunction_identify_options($mform);
                 break;
             case 'melodic-dictation':
+            case 'harmonic-dictation':
                 $this->add_melodic_dictation_options($mform);
                 break;
             default:
@@ -386,23 +387,6 @@ class qtype_musictheory_edit_form extends question_edit_form {
     }
 
     /**
-     * Adds form options for the melodic dictation subtype.
-     *
-     * @param object $mform the form being built.
-     */
-    private function add_melodic_dictation_options($mform) {
-        $this->add_showfirstnote_option($mform);
-        $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
-        $this->add_numberofnotes_option($mform);
-        if(isset($_REQUEST['musictheory_numberofnotes'])){
-            for ($i=1; $i <= $_REQUEST['musictheory_numberofnotes']; $i++) { 
-                $this->add_note_option($mform, 'givennote'.$i, get_string('notelbl', 'qtype_musictheory')." ".($i), true, true);
-                $mform->setDefault('musictheory_givennote'.$i.'letter', "C");
-                $mform->setDefault('musictheory_givennote'.$i.'register', "4");
-            }
-        }
-    }
-    /**
      * Adds form options for the random scale writing subtype.
      *
      * @param object $mform the form being built.
@@ -498,6 +482,24 @@ class qtype_musictheory_edit_form extends question_edit_form {
     private function add_harmonicfunction_identify_options($mform) {
         $this->add_harmonicfunction_write_options($mform);
         $this->add_harmonicfunctiontype_option($mform, 'musictheory_hfidentifyresponsetypes', true, 'hfidentifyresponsetypes');
+    }
+
+    /**
+     * Adds form options for the melodic dictation subtype.
+     *
+     * @param object $mform the form being built.
+     */
+    private function add_melodic_dictation_options($mform) {
+        $this->add_showfirstnote_option($mform);
+        $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
+        $this->add_numberofnotes_option($mform);
+        if(isset($_REQUEST['musictheory_numberofnotes'])){
+            for ($i=1; $i <= $_REQUEST['musictheory_numberofnotes']; $i++) { 
+                $this->add_note_option($mform, 'givennote'.$i, get_string('notelbl', 'qtype_musictheory')." ".($i), true, true);
+                $mform->setDefault('musictheory_givennote'.$i.'letter', "C");
+                $mform->setDefault('musictheory_givennote'.$i.'register', "4");
+            }
+        }
     }
 
     /**
@@ -1083,6 +1085,7 @@ class qtype_musictheory_validation {
             case 'harmonicfunction-identify':
                 return self::validate_harmonicfunction_options($data);
             case 'melodic-dictation':
+            case 'harmonic-dictation':
                 //return self::validate_melodic_dictation_options($data);
         }
         return array();

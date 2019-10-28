@@ -304,6 +304,7 @@ NS.questionRender.convertOptionsXMLtoObjectLiteral = function (optionsXML,
             options.includeKS = (options.includeKS === 'true');
             break;
         case 'melodic-dictation':
+        case 'harmonic-dictation':
             options.clef = optionsNode.getElementsByTagName('clef')[0].firstChild.nodeValue;
             options.numberofnotes = optionsNode.getElementsByTagName('numberofnotes')[0].firstChild.nodeValue;
             options.givenNote = [];
