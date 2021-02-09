@@ -74,6 +74,10 @@ class qtype_musictheory_edit_form extends question_edit_form {
                 'chordquality-write-random'        => get_string('qtype_chordquality-write-random', 'qtype_musictheory'),
                 'chordquality-identify'            => get_string('qtype_chordquality-identify', 'qtype_musictheory'),
                 'chordquality-identify-random'     => get_string('qtype_chordquality-identify-random', 'qtype_musictheory'),
+                'chordquality-write-extended'               => get_string('qtype_chordquality-write-extended', 'qtype_musictheory'),
+                'chordquality-write-extended-random'        => get_string('qtype_chordquality-write-extended-random', 'qtype_musictheory'),
+                'chordquality-identify-extended'            => get_string('qtype_chordquality-identify-extended', 'qtype_musictheory'),
+                'chordquality-identify-extended-random'     => get_string('qtype_chordquality-identify-extended-random', 'qtype_musictheory'),
                 'harmonicfunction-write'           => get_string('qtype_harmonicfunction-write', 'qtype_musictheory'),
                 'harmonicfunction-write-random'    => get_string('qtype_harmonicfunction-write-random', 'qtype_musictheory'),
                 'harmonicfunction-identify'        => get_string('qtype_harmonicfunction-identify', 'qtype_musictheory'),
@@ -200,6 +204,16 @@ class qtype_musictheory_edit_form extends question_edit_form {
             case 'chordquality-write-random':
             case 'chordquality-identify-random':
                 $this->add_chordquality_write_identify_random_options($mform);
+                break;
+            case 'chordquality-write-extended':
+                $this->add_chordquality_write_extended_options($mform);
+                break;
+            case 'chordquality-identify-extended':
+                $this->add_chordquality_identify_extended_options($mform);
+                break;
+            case 'chordquality-write-extended-random':
+            case 'chordquality-identify-extended-random':
+                $this->add_chordquality_write_identify_extended_random_options($mform);
                 break;
             case 'harmonicfunction-write':
                 $this->add_harmonicfunction_write_options($mform);
@@ -447,6 +461,44 @@ class qtype_musictheory_edit_form extends question_edit_form {
     private function add_chordquality_write_identify_random_options($mform) {
         $this->add_clef_option($mform, 'musictheory_clef_random', true, 'clef-random');
         $this->add_chordquality_option($mform, 'musictheory_chordquality_random', true, 'chordquality-random');
+    }
+
+    
+
+    /**
+     * Adds form options for the chord quality writing extended subtype.
+     *
+     * @param object $mform the form being built.
+     */
+    private function add_chordquality_write_extended_options($mform) {
+        $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
+        $this->add_note_option($mform, 'givennote', get_string('chordroot', 'qtype_musictheory'), true, false, false);
+        $this->add_chordquality_extended_option($mform, 'musictheory_chordquality', false, 'chordquality');
+        $this->add_root_or_inversion_option($mform, 'musictheory_root_or_inversion', 'root_or_inversion');
+    }
+
+    /**
+     * Adds form options for the chord quality identification extended subtype.
+     *
+     * @param object $mform the form being built.
+     */
+    private function add_chordquality_identify_extended_options($mform) {
+        $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
+        $this->add_note_option($mform, 'givennote', get_string('chordroot', 'qtype_musictheory'), true, false, true);
+        $this->add_chordquality_extended_option($mform, 'musictheory_chordquality', false, 'chordquality');
+        $this->add_root_or_inversion_option($mform, 'musictheory_root_or_inversion', 'root_or_inversion');
+    }
+
+    /**
+     * Adds form options for the random chord quality writing extended subtype.
+     *
+     * @param object $mform the form being built.
+     */
+    private function add_chordquality_write_identify_extended_random_options($mform) {
+        $this->add_clef_option($mform, 'musictheory_clef_random', true, 'clef-random');
+        $this->add_note_range_option($mform, 'givennote', true, 'chordroot');
+        $this->add_chordquality_extended_option($mform, 'musictheory_chordquality_random', true, 'chordquality-random');
+        $this->add_root_or_inversion_option($mform, 'musictheory_root_or_inversion', 'root_or_inversion');
     }
 
     /**
@@ -778,6 +830,50 @@ class qtype_musictheory_edit_form extends question_edit_form {
     }
 
     /**
+    * Adds a note range option to the form
+    *
+    * @param object $mform The form being built.
+    * @param string $questionfield The field name for chord quality type in the question
+    * object.
+    * @param boolean $multiselect Indicates whether a multiselect element should
+    * be added.
+    * @param string $labelkey The key to use for the option label.
+    */
+   private function add_note_range_option($mform, $questionfield, $multiselect, $labelkey) {
+        $selectoptionsletter = array(
+            'C' => get_string('notec', 'qtype_musictheory'),
+            'D' => get_string('noted', 'qtype_musictheory'),
+            'E' => get_string('notee', 'qtype_musictheory'),
+            'F' => get_string('notef', 'qtype_musictheory'),
+            'G' => get_string('noteg', 'qtype_musictheory'),
+            'A' => get_string('notea', 'qtype_musictheory'),
+            'B' => get_string('noteb', 'qtype_musictheory'),
+        );
+        $selectoptionsaccidental = array(
+            'b' => '&#9837;',
+            'n' => '&#9838;',
+            '#' => '&#9839;',
+        );
+        $selectoptionsnotes = array();
+        foreach($selectoptionsletter as $lk => $letter){
+            foreach ($selectoptionsaccidental as $ak => $accidental) {
+                $selectoptionsnotes[$lk.$ak] = $letter.$accidental;
+            }
+        }
+
+       if ($multiselect) {
+           $selectattr = array('multiple'
+               => 'multiple', 'size'     => 21);
+       } else {
+           $selectattr = array();
+       }
+
+       $lbl = get_string($labelkey, 'qtype_musictheory');
+       $mform->addElement('select', $questionfield, $lbl, $selectoptionsnotes, $selectattr);
+       $mform->addRule($questionfield, null, 'required', null, 'client');
+   }
+
+    /**
      * Adds an interval quality and size option to the form.
      *
      * @param object $mform The form being built.
@@ -901,6 +997,61 @@ class qtype_musictheory_edit_form extends question_edit_form {
 
         $lbl = get_string($labelkey, 'qtype_musictheory');
         $mform->addElement('select', $questionfield, $lbl, $selectoptionsquality, $selectattr);
+        $mform->addRule($questionfield, null, 'required', null, 'client');
+    }
+
+    /**
+     * Adds a chord quality option to the form
+     *
+     * @param object $mform The form being built.
+     * @param string $questionfield The field name for chord quality type in the question
+     * object.
+     * @param boolean $multiselect Indicates whether a multiselect element should
+     * be added.
+     * @param string $labelkey The key to use for the option label.
+     */
+    private function add_chordquality_extended_option($mform, $questionfield, $multiselect, $labelkey) {
+        $selectoptionsquality = array(
+            'major'      => get_string('major_triad', 'qtype_musictheory'),
+            'minor'      => get_string('minor_triad', 'qtype_musictheory'),
+            'augmented'  => get_string('augmented_triad', 'qtype_musictheory'),
+            'diminished' => get_string('diminished_triad', 'qtype_musictheory'),
+            'major_seventh'      => get_string('major_seventh', 'qtype_musictheory'),
+            'minor_seventh'      => get_string('minor_seventh', 'qtype_musictheory'),
+            'half_diminished_seventh'  => get_string('half_diminished_seventh', 'qtype_musictheory'),
+            'diminished_seventh' => get_string('diminished_seventh', 'qtype_musictheory'),
+        );
+
+        if ($multiselect) {
+            $selectattr = array('multiple'
+                => 'multiple', 'size'     => 8);
+        } else {
+            $selectattr = array();
+        }
+
+        $lbl = get_string($labelkey, 'qtype_musictheory');
+        $mform->addElement('select', $questionfield, $lbl, $selectoptionsquality, $selectattr);
+        $mform->addRule($questionfield, null, 'required', null, 'client');
+    }
+
+    /**
+     * Adds a chord quality option to the form
+     *
+     * @param object $mform The form being built.
+     * @param string $questionfield The field name for chord quality type in the question
+     * object.
+     * @param string $labelkey The key to use for the option label.
+     */
+    private function add_root_or_inversion_option($mform, $questionfield, $labelkey) {
+        $selectoptionsinversion = array(
+            'root'      => get_string('root_position', 'qtype_musictheory'),
+            '1st'      => get_string('first_inversion', 'qtype_musictheory'),
+            '2nd'  => get_string('second_inversion', 'qtype_musictheory'),
+            '3rd' => get_string('third_inversion', 'qtype_musictheory'),
+        );
+
+        $lbl = get_string($labelkey, 'qtype_musictheory');
+        $mform->addElement('select', $questionfield, $lbl, $selectoptionsinversion);
         $mform->addRule($questionfield, null, 'required', null, 'client');
     }
 

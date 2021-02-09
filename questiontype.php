@@ -107,6 +107,18 @@ class qtype_musictheory extends question_type {
             case 'chordquality-identify-random':
                 $class = 'qtype_musictheory_chordquality_identify_random';
                 break;
+            case 'chordquality-write-extended':
+                $class = 'qtype_musictheory_chordquality_write_extended';
+                break;
+            case 'chordquality-write-extended-random':
+                $class = 'qtype_musictheory_chordquality_write_extended_random';
+                break;
+            case 'chordquality-identify-extended':
+                $class = 'qtype_musictheory_chordquality_extended_identify';
+                break;
+            case 'chordquality-identify-extended-random':
+                $class = 'qtype_musictheory_chordquality_identify_extended_random';
+                break;
             case 'harmonicfunction-write':
                 $class = 'qtype_musictheory_harmonicfunction_write';
                 break;
@@ -258,6 +270,14 @@ class qtype_musictheory extends question_type {
                 $question->musictheory_givennoteaccidental = (string) $options->chordroot[0]->accidental;
                 $question->musictheory_chordquality = (string) $options->chordquality;
                 break;
+            case 'chordquality-write-extended':
+            case 'chordquality-identify-extended':
+                $question->musictheory_clef = (string) $options->clef;
+                $question->musictheory_givennoteletter = (string) $options->chordroot[0]->letter;
+                $question->musictheory_givennoteaccidental = (string) $options->chordroot[0]->accidental;
+                $question->musictheory_chordquality = (string) $options->chordquality;
+                $question->musictheory_root_or_inversion = (string) $options->root_or_inversion;
+                break;
             case 'harmonicfunction-identify':
                 $question->musictheory_hfidentifyresponsetypes = array();
                 $hfresponsetypes = 'harmonicfunction-responsetypes';
@@ -385,6 +405,19 @@ class qtype_musictheory extends question_type {
                 break;
             case 'chordquality-write-random':
             case 'chordquality-identify-random':
+                $question->musictheory_clef_random = array();
+                $clefrandom = 'clef-random';
+                foreach ($options->$clefrandom->children() as $clef) {
+                    array_push($question->musictheory_clef_random, (string) $clef);
+                }
+                $question->musictheory_chordquality_random = array();
+                $chordqualityrandom = 'chordquality-random';
+                foreach ($options->$chordqualityrandom->children() as $chordquality) {
+                    array_push($question->musictheory_chordquality_random, (string) $chordquality);
+                }
+                break;
+            case 'chordquality-write-extended-random':
+            case 'chordquality-identify-extended-random':
                 $question->musictheory_clef_random = array();
                 $clefrandom = 'clef-random';
                 foreach ($options->$clefrandom->children() as $clef) {
@@ -556,6 +589,16 @@ class qtype_musictheory extends question_type {
                 $outxml .= '</chordroot>';
                 $outxml .= '<chordquality>' . $question->musictheory_chordquality . '</chordquality>';
                 break;
+            case 'chordquality-write-extended':
+            case 'chordquality-identify-extended':
+                $outxml .= '<clef>' . $question->musictheory_clef . '</clef>';
+                $outxml .= '<chordroot>';
+                $outxml .= '<letter>' . $question->musictheory_givennoteletter . '</letter>';
+                $outxml .= '<accidental>' . $question->musictheory_givennoteaccidental . '</accidental>';
+                $outxml .= '</chordroot>';
+                $outxml .= '<chordquality>' . $question->musictheory_chordquality . '</chordquality>';
+                $outxml .= '<root_or_inversion>' . $question->musictheory_root_or_inversion . '</root_or_inversion>';
+                break;
             case 'harmonicfunction-identify':
                 $outxml .= '<harmonicfunction-responsetypes>';
                 foreach ($question->musictheory_hfidentifyresponsetypes as $hftype) {
@@ -697,6 +740,19 @@ class qtype_musictheory extends question_type {
                 break;
             case 'chordquality-write-random':
             case 'chordquality-identify-random':
+                $outxml .= '<clef-random>';
+                foreach ($question->musictheory_clef_random as $clef) {
+                    $outxml .= '<clef>' . $clef . '</clef>';
+                }
+                $outxml .= '</clef-random>';
+                $outxml .= '<chordquality-random>';
+                foreach ($question->musictheory_chordquality_random as $chordquality) {
+                    $outxml .= '<chordquality>' . $chordquality . '</chordquality>';
+                }
+                $outxml .= '</chordquality-random>';
+                break;
+            case 'chordquality-write-extended-random':
+            case 'chordquality-identify-extended-random':
                 $outxml .= '<clef-random>';
                 foreach ($question->musictheory_clef_random as $clef) {
                     $outxml .= '<clef>' . $clef . '</clef>';

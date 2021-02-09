@@ -115,6 +115,12 @@ abstract class qtype_musictheory_question extends question_graded_automatically 
             case 'chordquality-identify':
             case 'chordquality-identify-random':
                 return new qtype_musictheory_chordquality_identify_renderer($page, null);
+            case 'chordquality-write-extended':
+            case 'chordquality-write-extended-random':
+                return new qtype_musictheory_chordquality_write_extended_renderer($page, null);
+            case 'chordquality-identify-extended':
+            case 'chordquality-identify-extended-random':
+                return new qtype_musictheory_chordquality_identify_extended_renderer($page, null);
             case 'harmonicfunction-write':
             case 'harmonicfunction-write-random':
                 return new qtype_musictheory_harmonicfunction_write_renderer($page, null);
