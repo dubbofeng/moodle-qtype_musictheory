@@ -544,7 +544,7 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
         );
 
         $selectoptionsrootacc = array(
-            ''   => get_string('selectanoption', 'qtype_musictheory'),
+            //''   => get_string('selectanoption', 'qtype_musictheory'),
             'n'  => get_string('acc_n', 'qtype_musictheory'),
             '#'  => get_string('acc_sharp', 'qtype_musictheory'),
             'b'  => get_string('acc_b', 'qtype_musictheory'),
@@ -560,10 +560,10 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
 
         $selectoptionschordquality = array(
             ''           => get_string('selectanoption', 'qtype_musictheory'),
-            'major'      => get_string('major', 'qtype_musictheory'),
-            'minor'      => get_string('minor', 'qtype_musictheory'),
-            'augmented'  => get_string('augmented', 'qtype_musictheory'),
-            'diminished' => get_string('diminished', 'qtype_musictheory'),
+            'major'      => get_string('major_triad', 'qtype_musictheory'),
+            'minor'      => get_string('minor_triad', 'qtype_musictheory'),
+            'augmented'  => get_string('augmented_triad', 'qtype_musictheory'),
+            'diminished' => get_string('diminished_triad', 'qtype_musictheory'),
             'dominant_seventh'      => get_string('dominant_seventh', 'qtype_musictheory'),
             'minor_seventh'      => get_string('minor_seventh', 'qtype_musictheory'),
             'half_diminished_seventh'  => get_string('half_diminished_seventh', 'qtype_musictheory'),
