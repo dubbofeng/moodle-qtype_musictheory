@@ -490,7 +490,7 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
             case 'augmented':
                 $quality = 'A';
                 break;
-            case 'major_seventh':
+            case 'dominant_seventh':
                 $quality = 'Mm';
                 break;
             case 'minor_seventh':
@@ -564,7 +564,7 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
             'minor'      => get_string('minor', 'qtype_musictheory'),
             'augmented'  => get_string('augmented', 'qtype_musictheory'),
             'diminished' => get_string('diminished', 'qtype_musictheory'),
-            'major_seventh'      => get_string('major_seventh', 'qtype_musictheory'),
+            'dominant_seventh'      => get_string('dominant_seventh', 'qtype_musictheory'),
             'minor_seventh'      => get_string('minor_seventh', 'qtype_musictheory'),
             'half_diminished_seventh'  => get_string('half_diminished_seventh', 'qtype_musictheory'),
             'diminished_seventh' => get_string('diminished_seventh', 'qtype_musictheory'),

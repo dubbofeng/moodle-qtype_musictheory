@@ -353,7 +353,7 @@ class qtype_musictheory_chordquality_write_extended extends qtype_musictheory_qu
             case 'augmented':
                 $quality = 'A';
                 break;
-            case 'major_seventh':
+            case 'dominant_seventh':
                 $quality = 'Mm';
                 break;
             case 'minor_seventh':

@@ -1016,7 +1016,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
             'minor'      => get_string('minor_triad', 'qtype_musictheory'),
             'augmented'  => get_string('augmented_triad', 'qtype_musictheory'),
             'diminished' => get_string('diminished_triad', 'qtype_musictheory'),
-            'major_seventh'      => get_string('major_seventh', 'qtype_musictheory'),
+            'dominant_seventh'      => get_string('dominant_seventh', 'qtype_musictheory'),
             'minor_seventh'      => get_string('minor_seventh', 'qtype_musictheory'),
             'half_diminished_seventh'  => get_string('half_diminished_seventh', 'qtype_musictheory'),
             'diminished_seventh' => get_string('diminished_seventh', 'qtype_musictheory'),
