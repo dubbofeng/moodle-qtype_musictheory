@@ -428,6 +428,16 @@ class qtype_musictheory extends question_type {
                 foreach ($options->$chordqualityrandom->children() as $chordquality) {
                     array_push($question->musictheory_chordquality_random, (string) $chordquality);
                 }
+                $question->musictheory_inversion_random = array();
+                $inversionrandom = 'inversion-random';
+                foreach ($options->$inversionrandom->children() as $inversion) {
+                    array_push($question->musictheory_inversion_random, (string) $inversion);
+                }
+                $question->musictheory_givennote_random = array();
+                $givennoterandom = 'givennote-random';
+                foreach ($options->$givennoterandom->children() as $givennote) {
+                    array_push($question->musictheory_givennote_random, (string) $givennote);
+                }
                 break;
             case 'harmonicfunction-write-random':
             case 'harmonicfunction-identify-random':
@@ -763,6 +773,16 @@ class qtype_musictheory extends question_type {
                     $outxml .= '<chordquality>' . $chordquality . '</chordquality>';
                 }
                 $outxml .= '</chordquality-random>';
+                $outxml .= '<inversion-random>';
+                foreach ($question->musictheory_inversion_random as $inversion) {
+                    $outxml .= '<inversion>' . $inversion . '</inversion>';
+                }
+                $outxml .= '</inversion-random>';
+                $outxml .= '<givennote-random>';
+                foreach ($question->musictheory_givennote_random as $givennote) {
+                    $outxml .= '<givennote>' . $givennote . '</givennote>';
+                }
+                $outxml .= '</givennote-random>';
                 break;
             case 'harmonicfunction-write-random':
             case 'harmonicfunction-identify-random':

@@ -466,16 +466,15 @@ class qtype_musictheory_chordquality_write_extended_random extends qtype_musicth
     public function start_attempt(question_attempt_step $step, $variant) {
         $this->musictheory_clef = qtype_musictheory_randomiser::get_random_field($this->musictheory_clef_random);
         $this->musictheory_chordquality = qtype_musictheory_randomiser::get_random_field($this->musictheory_chordquality_random);
-        $this->musictheory_givennoteletter = qtype_musictheory_randomiser::get_random_letter_name();
-        $this->musictheory_givennoteaccidental = qtype_musictheory_randomiser::get_random_accidental(false);
-        if ($this->musictheory_chordquality == 'augmented' && $this->musictheory_givennoteletter == 'B' &&
-                $this->musictheory_givennoteaccidental == '#') {
-            $this->musictheory_givennoteaccidental = 'n';
-        }
+        $this->musictheory_givennote = qtype_musictheory_randomiser::get_random_field($this->musictheory_givennote_random);
+        $this->musictheory_inversion = qtype_musictheory_randomiser::get_random_field($this->musictheory_inversion_random);
+        $this->musictheory_givennoteletter = substr($this->musictheory_givennote,0,1);
+        $this->musictheory_givennoteaccidental = substr($this->musictheory_givennote,1,1);
         $this->musictheory_optionsxml = $this->qtype->get_options_xml($this, 'chordquality-write');
         $this->questiontext = $this->get_question_text();
         $step->set_qt_var('_var_clef', $this->musictheory_clef);
         $step->set_qt_var('_var_chordquality', $this->musictheory_chordquality);
+        $step->set_qt_var('_var_inversion', $this->musictheory_inversion);
         $step->set_qt_var('_var_givennoteletter', $this->musictheory_givennoteletter);
         $step->set_qt_var('_var_givennoteaccidental', $this->musictheory_givennoteaccidental);
         $step->set_qt_var('_var_optionsxml', $this->musictheory_optionsxml);
@@ -486,6 +485,7 @@ class qtype_musictheory_chordquality_write_extended_random extends qtype_musicth
     public function apply_attempt_state(question_attempt_step $step) {
         $this->musictheory_clef = $step->get_qt_var('_var_clef');
         $this->musictheory_chordquality = $step->get_qt_var('_var_chordquality');
+        $this->musictheory_inversion = $step->get_qt_var('_var_inversion');
         $this->musictheory_givennoteletter = $step->get_qt_var('_var_givennoteletter');
         $this->musictheory_givennoteaccidental = $step->get_qt_var('_var_givennoteaccidental');
         $this->musictheory_optionsxml = $step->get_qt_var('_var_optionsxml');
@@ -605,16 +605,15 @@ class qtype_musictheory_chordquality_identify_extended_random extends qtype_musi
     public function start_attempt(question_attempt_step $step, $variant) {
         $this->musictheory_clef = qtype_musictheory_randomiser::get_random_field($this->musictheory_clef_random);
         $this->musictheory_chordquality = qtype_musictheory_randomiser::get_random_field($this->musictheory_chordquality_random);
-        $this->musictheory_givennoteletter = qtype_musictheory_randomiser::get_random_letter_name();
-        $this->musictheory_givennoteaccidental = qtype_musictheory_randomiser::get_random_accidental(false);
-        if ($this->musictheory_chordquality == 'augmented' && $this->musictheory_givennoteletter == 'B' &&
-                $this->musictheory_givennoteaccidental == '#') {
-            $this->musictheory_givennoteaccidental = 'n';
-        }
+        $this->musictheory_givennote = qtype_musictheory_randomiser::get_random_field($this->musictheory_givennote_random);
+        $this->musictheory_inversion = qtype_musictheory_randomiser::get_random_field($this->musictheory_inversion_random);
+        $this->musictheory_givennoteletter = substr($this->musictheory_givennote,0,1);
+        $this->musictheory_givennoteaccidental = substr($this->musictheory_givennote,1,1);
         $this->musictheory_optionsxml = $this->qtype->get_options_xml($this, 'chordquality-identify');
         $this->questiontext = $this->get_question_text();
         $step->set_qt_var('_var_clef', $this->musictheory_clef);
         $step->set_qt_var('_var_chordquality', $this->musictheory_chordquality);
+        $step->set_qt_var('_var_inversion', $this->musictheory_inversion);
         $step->set_qt_var('_var_givennoteletter', $this->musictheory_givennoteletter);
         $step->set_qt_var('_var_givennoteaccidental', $this->musictheory_givennoteaccidental);
         $step->set_qt_var('_var_optionsxml', $this->musictheory_optionsxml);
@@ -625,6 +624,7 @@ class qtype_musictheory_chordquality_identify_extended_random extends qtype_musi
     public function apply_attempt_state(question_attempt_step $step) {
         $this->musictheory_clef = $step->get_qt_var('_var_clef');
         $this->musictheory_chordquality = $step->get_qt_var('_var_chordquality');
+        $this->musictheory_inversion = $step->get_qt_var('_var_inversion');
         $this->musictheory_givennoteletter = $step->get_qt_var('_var_givennoteletter');
         $this->musictheory_givennoteaccidental = $step->get_qt_var('_var_givennoteaccidental');
         $this->musictheory_optionsxml = $step->get_qt_var('_var_optionsxml');

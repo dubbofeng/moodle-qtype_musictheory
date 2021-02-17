@@ -496,9 +496,9 @@ class qtype_musictheory_edit_form extends question_edit_form {
      */
     private function add_chordquality_write_identify_extended_random_options($mform) {
         $this->add_clef_option($mform, 'musictheory_clef_random', true, 'clef-random');
-        $this->add_note_range_option($mform, 'givennote', true, 'chordroot');
+        $this->add_note_range_option($mform, 'musictheory_givennote_random', true, 'chordroot');
         $this->add_chordquality_extended_option($mform, 'musictheory_chordquality_random', true, 'chordquality-random');
-        $this->add_inversion_option($mform, 'musictheory_inversion', true, 'inversion');
+        $this->add_inversion_option($mform, 'musictheory_inversion_random', true, 'inversion');
     }
 
     /**
