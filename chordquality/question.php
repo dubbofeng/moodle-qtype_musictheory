@@ -374,7 +374,7 @@ class qtype_musictheory_chordquality_write_extended extends qtype_musictheory_qu
             $reg = 3;
         }
         $root = new Note($this->musictheory_givennoteletter, $this->musictheory_givennoteaccidental, $reg);
-        $chord = new Chord($root, $quality, 0);
+        $chord = new Chord($root, $quality, $this->musictheory_inversion);
         return array('answer' => (string) $chord);
     }
 
@@ -429,8 +429,15 @@ class qtype_musictheory_chordquality_write_extended extends qtype_musictheory_qu
         }
         $chord = get_string('note' . strtolower($this->musictheory_givennoteletter), 'qtype_musictheory');
         $quality = get_string($this->musictheory_chordquality, 'qtype_musictheory');
-        $chord .= $acc . ' ' . $quality;
-
+        $inversion = $this->musictheory_inversion;
+        $selectoptionsinversion = array(
+            '0'      => get_string('inversion0', 'qtype_musictheory'),
+            '1'      => get_string('inversion1', 'qtype_musictheory'),
+            '2'  => get_string('inversion2', 'qtype_musictheory'),
+            '3' => get_string('inversion3', 'qtype_musictheory'),
+        );
+        $chord .= $acc . ' ' . $quality.' ('.$selectoptionsinversion[$inversion].")";
+        
         return $qtext . ': <b>' . $chord . '</b>';
     }
 
@@ -512,7 +519,8 @@ class qtype_musictheory_chordquality_identify_extended extends qtype_musictheory
         $corrresp = array(
             'musictheory_answer_rootletter'   => $this->musictheory_givennoteletter,
             'musictheory_answer_rootacc'      => $this->musictheory_givennoteaccidental,
-            'musictheory_answer_chordquality' => $this->musictheory_chordquality
+            'musictheory_answer_chordquality' => $this->musictheory_chordquality,
+            'musictheory_answer_inversion' => $this->musictheory_inversion
         );
         return $corrresp;
     }
@@ -521,7 +529,8 @@ class qtype_musictheory_chordquality_identify_extended extends qtype_musictheory
         $expdata = array(
             'musictheory_answer_rootletter'   => PARAM_TEXT,
             'musictheory_answer_rootacc'      => PARAM_TEXT,
-            'musictheory_answer_chordquality' => PARAM_TEXT
+            'musictheory_answer_chordquality' => PARAM_TEXT,
+            'musictheory_answer_inversion' => PARAM_TEXT
         );
         return $expdata;
     }
@@ -530,13 +539,15 @@ class qtype_musictheory_chordquality_identify_extended extends qtype_musictheory
 
         if (!isset($response['musictheory_answer_rootletter']) ||
                 !isset($response['musictheory_answer_rootacc']) ||
-                !isset($response['musictheory_answer_chordquality'])) {
+                !isset($response['musictheory_answer_chordquality']) ||
+                !isset($response['musictheory_answer_inversion'])) {
             return false;
         }
 
         return (!empty($response['musictheory_answer_rootletter']) &&
                 !empty($response['musictheory_answer_rootacc']) &&
-                !empty($response['musictheory_answer_chordquality']));
+                !empty($response['musictheory_answer_chordquality']) &&
+                !empty($response['musictheory_answer_inversion']));
     }
 
     public function is_same_response(array $prevresponse, array $newresponse) {
@@ -546,7 +557,9 @@ class qtype_musictheory_chordquality_identify_extended extends qtype_musictheory
                         $prevresponse, $newresponse, 'musictheory_answer_rootacc');
         $samechordquality = question_utils::arrays_same_at_key_missing_is_blank(
                         $prevresponse, $newresponse, 'musictheory_answer_chordquality');
-        return ($samerootletter && $samerootacc && $samechordquality);
+        $sameinversion = question_utils::arrays_same_at_key_missing_is_blank(
+                        $prevresponse, $newresponse, 'musictheory_answer_inversion');
+        return ($samerootletter && $samerootacc && $samechordquality && $sameinversion);
     }
 
     public function get_validation_error(array $response) {
@@ -560,15 +573,17 @@ class qtype_musictheory_chordquality_identify_extended extends qtype_musictheory
                 !isset($response['musictheory_answer_rootacc']) ||
                 empty($response['musictheory_answer_rootacc']) ||
                 !isset($response['musictheory_answer_chordquality']) ||
-                empty($response['musictheory_answer_chordquality'])) {
+                empty($response['musictheory_answer_chordquality']) ||
+                !isset($response['musictheory_answer_inversion']) ||
+                empty($response['musictheory_answer_inversion'])) {
             return '';
         }
         $root = get_string('note' . strtolower($response['musictheory_answer_rootletter']), 'qtype_musictheory');
         $acckey = 'acc_' . str_replace('#', 'sharp', $response['musictheory_answer_rootacc']);
         $acc = get_string($acckey, 'qtype_musictheory');
         $quality = get_string($response['musictheory_answer_chordquality'], 'qtype_musictheory');
-
-        return $root . $acc . ' ' . $quality;
+        $inversion = get_string('inversion' . $response['musictheory_answer_inversion'], 'qtype_musictheory');
+        return $root . $acc . ' ' . $quality. " ".$inversion;
     }
 
     public function get_question_text() {

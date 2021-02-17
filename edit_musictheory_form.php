@@ -474,7 +474,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
         $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
         $this->add_note_option($mform, 'givennote', get_string('chordroot', 'qtype_musictheory'), true, false, false);
         $this->add_chordquality_extended_option($mform, 'musictheory_chordquality', false, 'chordquality');
-        $this->add_root_or_inversion_option($mform, 'musictheory_root_or_inversion', 'root_or_inversion');
+        $this->add_inversion_option($mform, 'musictheory_inversion', false, 'inversion');
     }
 
     /**
@@ -486,7 +486,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
         $this->add_clef_option($mform, 'musictheory_clef', false, 'clef');
         $this->add_note_option($mform, 'givennote', get_string('chordroot', 'qtype_musictheory'), true, false, true);
         $this->add_chordquality_extended_option($mform, 'musictheory_chordquality', false, 'chordquality');
-        $this->add_root_or_inversion_option($mform, 'musictheory_root_or_inversion', 'root_or_inversion');
+        $this->add_inversion_option($mform, 'musictheory_inversion', false, 'inversion');
     }
 
     /**
@@ -498,7 +498,7 @@ class qtype_musictheory_edit_form extends question_edit_form {
         $this->add_clef_option($mform, 'musictheory_clef_random', true, 'clef-random');
         $this->add_note_range_option($mform, 'givennote', true, 'chordroot');
         $this->add_chordquality_extended_option($mform, 'musictheory_chordquality_random', true, 'chordquality-random');
-        $this->add_root_or_inversion_option($mform, 'musictheory_root_or_inversion', 'root_or_inversion');
+        $this->add_inversion_option($mform, 'musictheory_inversion', true, 'inversion');
     }
 
     /**
@@ -1042,16 +1042,23 @@ class qtype_musictheory_edit_form extends question_edit_form {
      * object.
      * @param string $labelkey The key to use for the option label.
      */
-    private function add_root_or_inversion_option($mform, $questionfield, $labelkey) {
+    private function add_inversion_option($mform, $questionfield, $multiselect, $labelkey) {
         $selectoptionsinversion = array(
-            'root'      => get_string('root_position', 'qtype_musictheory'),
-            '1st'      => get_string('first_inversion', 'qtype_musictheory'),
-            '2nd'  => get_string('second_inversion', 'qtype_musictheory'),
-            '3rd' => get_string('third_inversion', 'qtype_musictheory'),
+            '0'      => get_string('inversion0', 'qtype_musictheory'),
+            '1'      => get_string('inversion1', 'qtype_musictheory'),
+            '2'  => get_string('inversion2', 'qtype_musictheory'),
+            '3' => get_string('inversion3', 'qtype_musictheory'),
         );
 
+        if ($multiselect) {
+            $selectattr = array('multiple'
+                => 'multiple', 'size'     => 4);
+        } else {
+            $selectattr = array();
+        }
+
         $lbl = get_string($labelkey, 'qtype_musictheory');
-        $mform->addElement('select', $questionfield, $lbl, $selectoptionsinversion);
+        $mform->addElement('select', $questionfield, $lbl, $selectoptionsinversion, $selectattr);
         $mform->addRule($questionfield, null, 'required', null, 'client');
     }
 

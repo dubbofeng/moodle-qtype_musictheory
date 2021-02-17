@@ -225,12 +225,12 @@ $string['major_seventh'] = 'Major seventh';
 $string['minor_seventh'] = 'Minor seventh';
 $string['half_diminished_seventh'] = 'Half diminished seventh';
 $string['diminished_seventh'] = 'Diminished seventh';
-$string['root_position'] = 'Root position';
-$string['first_inversion'] = '1st inversion';
-$string['second_inversion'] = '2nd inversion';
-$string['third_inversion'] = '3rd inversion';
-$string['root_or_inversion'] = 'Root or inversion';
-$string['musictheory_root_or_inversion'] = 'Root or inversion';
+$string['inversion0'] = 'Root position';
+$string['inversion1'] = '1st inversion';
+$string['inversion2'] = '2nd inversion';
+$string['inversion3'] = '3rd inversion';
+$string['inversion'] = 'Root or inversion';
+$string['musictheory_inversion'] = 'Root or inversion';
 
 // Interval sizes.
 $string['size2'] = '2nd';

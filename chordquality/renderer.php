@@ -455,10 +455,12 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
         $chordqualityselectid = $qa->get_qt_field_name('musictheory_answer_chordquality');
         $rootletterselectid = $qa->get_qt_field_name('musictheory_answer_rootletter');
         $rootaccselectid = $qa->get_qt_field_name('musictheory_answer_rootacc');
+        $inversionselectid = $qa->get_qt_field_name('musictheory_answer_inversion');
 
         $currquality = $qa->get_last_qt_var('musictheory_answer_chordquality');
         $currrootletter = $qa->get_last_qt_var('musictheory_answer_rootletter');
         $currrootacc = $qa->get_last_qt_var('musictheory_answer_rootacc');
+        $currinversion = $qa->get_last_qt_var('musictheory_answer_inversion');
 
         switch ($question->musictheory_clef) {
             case 'treble':
@@ -504,7 +506,7 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
                 $quality = 'M';
         }
 
-        $chord = new Chord($root, $quality, 0);
+        $chord = new Chord($root, $quality, $question->musictheory_inversion);
         $initialinput = (string) $chord;
 
         $moduleparams = array(
@@ -573,10 +575,23 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
             'id'   => $chordqualityselectid
         );
 
+        $selectoptionsinversion = array(
+            '0'      => get_string('inversion0', 'qtype_musictheory'),
+            '1'      => get_string('inversion1', 'qtype_musictheory'),
+            '2'  => get_string('inversion2', 'qtype_musictheory'),
+            '3' => get_string('inversion3', 'qtype_musictheory'),
+        );
+
+        $inversionselectattributes = array(
+            'name' => $inversionselectid,
+            'id'   => $inversionselectid
+        );
+
         if ($options->readonly) {
             $chordqualityselectattributes['disabled'] = 'true';
             $rootletterselectattributes['disabled'] = 'true';
             $rootaccselectattributes['disabled'] = 'true';
+            $inversion_selectattributes['disabled'] = 'true';
         }
 
         if ($options->correctness) {
@@ -600,6 +615,13 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
                     $rootaccselectattributes['class'] = $this->feedback_class(1);
                 } else {
                     $rootaccselectattributes['class'] = $this->feedback_class(0);
+                }
+            }
+            if (!is_null($currinversion)) {
+                if ($currinversion === $corrresp['musictheory_answer_inversion']) {
+                    $currinversionselectattributes['class'] = $this->feedback_class(1);
+                } else {
+                    $currinversionselectattributes['class'] = $this->feedback_class(0);
                 }
             }
         }
@@ -633,6 +655,7 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
         $input .= html_writer::select($selectoptionsrootacc, $rootaccselectid, $currrootacc, true, $rootaccselectattributes);
         $input .= html_writer::select($selectoptionschordquality, $chordqualityselectid, $currquality, true,
                                       $chordqualityselectattributes);
+        $input .= html_writer::select($selectoptionsinversion, $inversionselectid, $currinversion, true, $inversionselectattributes);
         $result .= html_writer::start_tag('div', array('class' => 'ablock'));
         $result .= $input;
         $result .= html_writer::end_tag('div');
@@ -641,10 +664,12 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
             $currentchordquality = $qa->get_last_qt_var('musictheory_answer_chordquality');
             $currentrootletter = $qa->get_last_qt_var('musictheory_answer_rootletter');
             $currentrootacc = $qa->get_last_qt_var('musictheory_answer_rootacc');
+            $currentinversion = $qa->get_last_qt_var('musictheory_answer_inversion');
             $answerarray = array(
                 'musictheory_answer_chordquality' => $currentchordquality,
                 'musictheory_answer_rootletter'   => $currentrootletter,
-                'musictheory_answer_rootacc'      => $currentrootacc
+                'musictheory_answer_rootacc'      => $currentrootacc,
+                'musictheory_answer_inversion'      => $currentinversion
             );
             $result .= html_writer::nonempty_tag('div', $question->get_validation_error($answerarray),
                                                                                         array('class' => 'validationerror'));
@@ -660,7 +685,8 @@ class qtype_musictheory_chordquality_identify_extended_renderer extends qtype_mu
         $acckey = str_replace('#', 'sharp', $correctresponsearray['musictheory_answer_rootacc']);
         $acc = get_string('acc_' . $acckey, 'qtype_musictheory');
         $quality = get_string($correctresponsearray['musictheory_answer_chordquality'], 'qtype_musictheory');
-        return get_string('correctansweris', 'qtype_musictheory') . ' <b>' . $ltr . $acc . ' ' . $quality . '</b>';
+        $inversion = get_string($correctresponsearray['musictheory_answer_inversion'], 'qtype_musictheory');
+        return get_string('correctansweris', 'qtype_musictheory') . ' <b>' . $ltr . $acc . ' ' . $quality . $inversion.'</b>';
     }
 
 }
