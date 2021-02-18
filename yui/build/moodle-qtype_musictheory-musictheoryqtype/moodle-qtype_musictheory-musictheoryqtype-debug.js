@@ -653,7 +653,6 @@ NS.XMLConverter.prototype.getCanvasTextOutput =
                 case 'scale-write':
                     return this.getScaleWriteTextOutput(stateXML);
                 case 'chordquality-write':
-                case 'chordquality-write-extended':
                 case 'harmonicfunction-write':
                     return this.getHarmonicfunctionWriteTextOutput(stateXML);
                 case 'melodic-dictation':

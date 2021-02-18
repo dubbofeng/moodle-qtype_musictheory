@@ -280,6 +280,8 @@ NS.questionRender.convertOptionsXMLtoObjectLiteral = function (optionsXML,
             break;
         case 'chordquality-write':
         case 'chordquality-identify':
+        case 'chordquality-write-extended':
+        case 'chordquality-identify-extended':
             options.clef = optionsNode.getElementsByTagName(
                     'clef')[0].firstChild.nodeValue;
             options.maxNotes = additionalParams.maxnotes;

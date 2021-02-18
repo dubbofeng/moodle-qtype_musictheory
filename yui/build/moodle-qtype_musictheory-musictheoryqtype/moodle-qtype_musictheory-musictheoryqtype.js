@@ -282,6 +282,8 @@ NS.questionRender.convertOptionsXMLtoObjectLiteral = function (optionsXML,
             break;
         case 'chordquality-write':
         case 'chordquality-identify':
+        case 'chordquality-write-extended':
+        case 'chordquality-identify-extended':
             options.clef = optionsNode.getElementsByTagName(
                     'clef')[0].firstChild.nodeValue;
             options.maxNotes = additionalParams.maxnotes;
@@ -610,11 +612,13 @@ NS.XMLConverter.prototype.getCanvasXML = function (input) {
         case 'scale-identify':
             return this.getScaleIdentifyXML(input);
         case 'chordquality-write':
+        case 'chordquality-write-extended':
             return this.getChordQualityWriteXML(input);
         case 'harmonicfunction-write':
             return this.getHarmonicFunctionWriteXML(input);
         case 'harmonicfunction-identify':
         case 'chordquality-identify':
+        case 'chordquality-identify-extended':
             return this.getHarmonicFunctionIdentifyXML(input);
         case 'melodic-dictation':
             return this.getMelodicDictationXML(input);
